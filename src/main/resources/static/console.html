@@ -293,9 +293,9 @@ body {
 }
 
 .thinking-section {
-  margin: 12px 0;
+  margin: 0;
   padding: 12px 16px;
-  border-radius: var(--md-sys-shape-corner-sm);
+  border-radius: 0 0 var(--md-sys-shape-corner-sm) var(--md-sys-shape-corner-sm);
   background: var(--md-sys-color-surface-container-low);
   border-left: 3px solid var(--md-sys-color-outline-variant);
   font: var(--md-sys-typescale-body-small);
@@ -305,13 +305,49 @@ body {
   max-height: 200px;
   overflow-y: auto;
 }
+
+.thinking-details {
+  margin: 12px 0;
+}
+.thinking-details .thinking-section {
+  margin: 0;
+}
+
+.thinking-summary {
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--md-sys-shape-corner-sm);
+  background: var(--md-sys-color-surface-container-low);
+  border-left: 3px solid var(--md-sys-color-outline-variant);
+  list-style: none;
+  user-select: none;
+  transition: border-radius var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+.thinking-summary::-webkit-details-marker { display: none; }
+
 .thinking-label {
   font: var(--md-sys-typescale-label-small);
   color: var(--md-sys-color-on-surface-variant);
   opacity: 0.6;
-  margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.thinking-chevron {
+  font-size: 20px;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+.thinking-details[open] > .thinking-summary {
+  border-radius: var(--md-sys-shape-corner-sm) var(--md-sys-shape-corner-sm) 0 0;
+}
+.thinking-details:not([open]) > .thinking-summary {
+  border-radius: var(--md-sys-shape-corner-sm);
+}
+.thinking-details:not([open]) .thinking-chevron {
+  transform: rotate(-90deg);
 }
 
 .response-section {
@@ -520,6 +556,78 @@ tr:hover td { background: var(--md-sys-color-outline-variant-soft); }
 .md3-input:focus { border-color: var(--md-sys-color-primary); outline: none; }
 .dialog-actions { display: flex; gap: 12px; justify-content: flex-end; }
 
+/* ============= Settings Panel ============= */
+.settings-group {
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: var(--md-sys-shape-corner-md);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  gap: 16px;
+}
+.settings-row + .settings-row { border-top: 1px solid var(--md-sys-color-outline-variant); }
+.settings-label { font: var(--md-sys-typescale-title-small); }
+.settings-desc {
+  font: var(--md-sys-typescale-body-small);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 4px;
+  max-width: 400px;
+}
+
+/* Language toggle buttons */
+.toggle-group {
+  display: flex; gap: 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+.lang-btn {
+  padding: 8px 20px;
+  font: var(--md-sys-typescale-label-medium);
+  border: none; cursor: pointer;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+.lang-btn + .lang-btn { border-left: 1px solid var(--md-sys-color-outline-variant); }
+.lang-btn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* MD3 Switch */
+.md3-switch {
+  position: relative; display: inline-flex; align-items: center; cursor: pointer;
+}
+.md3-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.md3-switch-track {
+  display: block; width: 48px; height: 28px;
+  border-radius: 14px;
+  background: var(--md-sys-color-surface-container-highest);
+  border: 2px solid var(--md-sys-color-outline-variant);
+  position: relative;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+.md3-switch-track::after {
+  content: '';
+  position: absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--md-sys-color-outline-variant);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+.md3-switch input:checked + .md3-switch-track {
+  background: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+.md3-switch input:checked + .md3-switch-track::after {
+  transform: translateX(20px);
+  background: var(--md-sys-color-on-primary);
+}
+
 /* ============= Section Header ============= */
 .section-header {
   font: var(--md-sys-typescale-title-medium);
@@ -595,9 +703,17 @@ pre {
     <span class="icon material-symbols-rounded">extension</span>
     <span class="label">Skills</span>
   </button>
+  <button class="nav-item" data-panel="knowledge" aria-label="Knowledge">
+    <span class="icon material-symbols-rounded">book</span>
+    <span class="label">Knowledge</span>
+  </button>
   <button class="nav-item" data-panel="mcp" aria-label="MCP">
     <span class="icon material-symbols-rounded">hub</span>
     <span class="label">MCP</span>
+  </button>
+  <button class="nav-item" data-panel="settings" aria-label="Settings">
+    <span class="icon material-symbols-rounded">settings</span>
+    <span class="label">Settings</span>
   </button>
   <div class="nav-spacer"></div>
   <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
@@ -617,12 +733,11 @@ pre {
           <span class="status-dot online"></span>
           <span id="activeModelLabel">Loading...</span>
         </div>
+          <button class="btn btn-outlined" id="newChatBtn" onclick="endConversation()" style="margin-left:12px"><span class="icon material-symbols-rounded">refresh</span> New Chat</button>
       </div>
       <div class="chat-messages" id="chatMessages">
-        <div class="msg assistant">
+        <div class="msg assistant" id="welcomeMsg">
           <div class="model-tag">ChatAI</div>
-          Welcome to ChatAI! Try:
-          "weather in Tokyo", "calculate 3+5*2", or "search for AI news".
         </div>
       </div>
       <div class="chat-input-area">
@@ -659,16 +774,16 @@ pre {
   <div class="panel" id="panel-skills">
     <div class="top-bar">
       <h1>Skill Marketplace</h1>
-      <button class="btn btn-filled" onclick="document.getElementById('skillJarFile').click()">
-        <span class="icon material-symbols-rounded">upload</span> Upload JAR
+      <button class="btn btn-filled" id="skillUploadBtn" onclick="document.getElementById('skillJarFile').click()">
+        <span class="icon material-symbols-rounded">upload</span>
       </button>
       <input type="file" id="skillJarFile" accept=".jar" style="display:none" onchange="uploadSkill()">
     </div>
     <div class="content">
-      <div class="section-label">Installed Skills</div>
+      <div class="section-label" id="skillsSectionLabel">Installed Skills</div>
       <div class="table-container">
         <table>
-          <thead><tr><th>Name</th><th>Description</th><th>Version</th><th>Status</th><th>Type</th><th>Actions</th></tr></thead>
+          <thead><tr><th id="skThName">Name</th><th id="skThDesc">Description</th><th id="skThVer">Version</th><th id="skThStatus">Status</th><th id="skThType">Type</th><th id="skThActions">Actions</th></tr></thead>
           <tbody id="skillsTable"><tr><td colspan="6"><div class="empty-state"><span class="icon material-symbols-rounded">extension</span><h3>Loading...</h3></div></td></tr></tbody>
         </table>
       </div>
@@ -681,35 +796,107 @@ pre {
       <h1>MCP Tools & Servers</h1>
     </div>
     <div class="content">
-      <div class="section-label">Built-in Servers</div>
+      <div class="section-label" id="mcpBuiltinLabel">Built-in Servers</div>
       <div class="table-container" style="margin-bottom:24px">
         <table>
-          <thead><tr><th>Server</th><th>Type</th><th>Tools</th><th>Status</th></tr></thead>
+          <thead><tr><th id="mcpThServer">Server</th><th id="mcpThType">Type</th><th id="mcpThTools">Tools</th><th id="mcpThStatus">Status</th></tr></thead>
           <tbody id="mcpServersTable"></tbody>
         </table>
       </div>
 
-      <div class="section-label">Available MCP Tools</div>
+      <div class="section-label" id="mcpAvailableLabel">Available MCP Tools</div>
       <div class="table-container" style="margin-bottom:24px">
         <table>
-          <thead><tr><th>Server</th><th>Tool</th><th>Description</th><th>Action</th></tr></thead>
+          <thead><tr><th id="mcpThServer2">Server</th><th id="mcpThTool">Tool</th><th id="mcpThDesc">Description</th><th id="mcpThAction">Action</th></tr></thead>
           <tbody id="mcpToolsTable"></tbody>
         </table>
       </div>
 
-      <div class="section-label">Connect External MCP Server</div>
+      <div class="section-label" id="mcpConnectLabel">Connect External MCP Server</div>
       <div class="card" style="margin-bottom:16px">
         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
           <input type="text" id="mcpName" placeholder="Server name"
             style="flex:1;min-width:140px;padding:10px 16px;border-radius:var(--md-sys-shape-corner-full);border:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container-high);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-medium);outline:none;">
           <input type="text" id="mcpEndpoint" placeholder="http://host:port/mcp"
             style="flex:2;min-width:220px;padding:10px 16px;border-radius:var(--md-sys-shape-corner-full);border:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container-high);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-medium);outline:none;">
-          <button class="btn btn-filled" onclick="connectMcp()">
-            <span class="icon material-symbols-rounded">link</span> Connect
+          <button class="btn btn-filled" id="mcpConnectBtn" onclick="connectMcp()">
+            <span class="icon material-symbols-rounded">link</span>
           </button>
         </div>
       </div>
       <div id="mcpCallResult"></div>
+    </div>
+  </div>
+  <!-- ====== Knowledge Panel ====== -->
+  <div class="panel" id="panel-knowledge">
+    <div class="top-bar">
+      <h1 id="knowledgeTitle">Knowledge Base</h1>
+      <button class="btn btn-filled" id="knowledgeUploadBtn" onclick="document.getElementById('knowledgeFile').click()">
+        <span class="icon material-symbols-rounded">upload</span> Upload TXT
+      </button>
+      <input type="file" id="knowledgeFile" accept=".txt" style="display:none" onchange="uploadKnowledge()">
+    </div>
+    <div class="content">
+      <div class="section-label" id="knowledgeAddLabel">Add Knowledge / Role</div>
+      <div class="card" style="margin-bottom:24px">
+        <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+          <input type="text" id="kbName" placeholder="Name" style="flex:1;min-width:140px;padding:10px 16px;border-radius:var(--md-sys-shape-corner-full);border:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container-high);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-medium);outline:none;">
+          <select id="kbType" style="padding:10px 16px;border-radius:var(--md-sys-shape-corner-full);border:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container-high);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-medium);outline:none;min-width:140px">
+            <option value="knowledge">Knowledge Base</option>
+            <option value="role">Role Simulation</option>
+          </select>
+        </div>
+        <textarea id="kbContent" rows="6" placeholder="Enter text content or upload a TXT file..." style="width:100%;padding:12px 16px;border-radius:var(--md-sys-shape-corner-sm);border:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container-high);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-medium);outline:none;resize:vertical;box-sizing:border-box;margin-bottom:12px"></textarea>
+        <button class="btn btn-filled" id="knowledgeSaveBtn" onclick="saveKnowledgeText()">
+          <span class="icon material-symbols-rounded">save</span> Save & Activate
+        </button>
+      </div>
+      <div class="section-label" id="knowledgeListLabel">Active Knowledge</div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th id="kbThName">Name</th><th id="kbThType">Type</th><th id="kbThStatus">Status</th><th id="kbThCreated">Created</th><th id="kbThActions">Actions</th></tr></thead>
+          <tbody id="knowledgeTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:24px"><span class="section-label" id="memoryListLabel" style="margin:0">Persistent Memory</span><button class="btn btn-outlined" id="memoryClearBtn" onclick="clearAllMemories()" style="padding:6px 16px;font-size:12px">Clear All</button></div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th id="memThTopic">Topic</th><th id="memThContent">Content</th><th id="memThActions">Actions</th></tr></thead>
+          <tbody id="memoryTable"></tbody>
+        </table>
+      </div>
+  </div>
+
+  <!-- ====== Settings Panel ====== -->
+  <div class="panel" id="panel-settings">
+    <div class="top-bar"><h1>Settings</h1></div>
+    <div class="content">
+      <div class="section-label" id="settingsLangLabel">Interface Language / 界面语言</div>
+      <div class="settings-group">
+        <div class="settings-row">
+          <span class="settings-label" id="settingsLangRowLabel">Language</span>
+          <div class="toggle-group">
+            <button class="lang-btn" data-lang="zh" id="langZh">中文</button>
+            <button class="lang-btn" data-lang="en" id="langEn">English</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:24px" id="settingsPrefsLabel">Preferences</div>
+      <div class="settings-group">
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" id="settingsFollowLabel">UI follows AI language</div>
+            <div class="settings-desc" id="settingsFollowDesc">When enabled, the UI switches to match the AI's response language automatically.</div>
+          </div>
+          <label class="md3-switch">
+            <input type="checkbox" id="followAiToggle" onchange="toggleFollowAiLang(this.checked)">
+            <span class="md3-switch-track"></span>
+          </label>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -720,18 +907,271 @@ pre {
   <div class="dialog">
     <h2 class="dialog-title" id="keyDialogTitle">Set API Key</h2>
     <div class="dialog-body">
-      <label class="dialog-label">API Key</label>
+      <label class="dialog-label" id="keyDialogLabel">API Key</label>
       <input type="password" id="keyDialogInput" class="md3-input" placeholder="sk-..." autocomplete="off">
-      <p class="dialog-hint">Your key is stored in memory only and never persisted to disk.</p>
+      <p class="dialog-hint" id="keyDialogHint">Your key is stored in memory only and never persisted to disk.</p>
     </div>
     <div class="dialog-actions">
-      <button class="btn btn-outlined" onclick="closeKeyDialog()">Cancel</button>
+      <button class="btn btn-outlined" id="keyDialogCancelBtn" onclick="closeKeyDialog()">Cancel</button>
       <button class="btn btn-filled" id="keyDialogSaveBtn" onclick="saveApiKey()">Save & Enable</button>
     </div>
   </div>
 </div>
 
 <script>
+// ============= i18n System =============
+const i18n = {
+  zh: {
+    navChat: '对话', navModels: '模型', navSkills: '技能', navMcp: 'MCP工具', navSettings: '设置',
+    chatTitle: '对话', chatPlaceholder: '输入消息，按 Enter 发送...', chatSend: '发送',
+    chatThinking: '思考中...', chatWelcome: '欢迎使用 ChatAI！你可以问我任何问题，试试这些功能：\n\n• 天气查询（如"北京的天气"）\n• 数学计算（如"计算 3+5*2"）\n• 网络搜索（如"搜索AI新闻"）',
+    modelTitle: '模型', modelAvailable: '可用模型', modelActive: '当前', modelLoading: '加载模型中...',
+    modelSwitch: '切换', modelConfigure: '配置', modelDisable: '禁用',
+    modelKeySet: '已设置密钥', modelNeedsEnabling: '需要启用', modelNeedsKey: '需要API密钥',
+    skillTitle: '技能市场', skillUpload: '上传JAR', skillInstalled: '已安装的技能',
+    skillName: '名称', skillDesc: '描述', skillVersion: '版本', skillStatus: '状态', skillType: '类型', skillActions: '操作',
+    skillBuiltin: '内置', skillExternal: '外部', skillEnabled: '已启用', skillDisabled: '已禁用',
+    skillEnable: '启用', skillDisableBtn: '禁用', skillRemove: '移除', skillLoading: '加载中...',
+    mcpTitle: 'MCP工具与服务', mcpBuiltin: '内置服务', mcpAvailable: '可用MCP工具',
+    mcpConnect: '连接外部MCP服务', mcpServerName: '服务名称', mcpEndpoint: 'http://host:port/mcp',
+    mcpConnectBtn: '连接', mcpServer: '服务', mcpType: '类型', mcpTools: '工具',
+    mcpStatus: '状态', mcpTool: '工具', mcpDescription: '描述', mcpAction: '操作',
+    mcpCall: '调用', mcpConnected: '已连接', mcpDisconnected: '未连接',
+    settingsTitle: '设置', settingsLanguage: '界面语言', settingsFollowLang: '界面语言跟随AI回复语言',
+    settingsFollowDesc: '开启后，当AI使用中文回复时界面自动切换为中文，使用英文时切换为英文。',
+    dialogTitle: '配置 API 密钥', dialogLabel: 'API 密钥', dialogHint: '密钥仅存储在内存中，不会持久化到磁盘。',
+    dialogCancel: '取消', dialogSave: '保存并启用',
+    toastSwitched: '已切换至', toastKeySaved: 'API密钥已保存，模型已启用',
+    toastModelDisabled: '模型已禁用', toastSkillLoaded: '技能已加载',
+    toastError: '错误', toastFailedSwitch: '切换模型失败', toastFailed: '操作失败',
+    toastEnterKey: '请输入API密钥', toastUploadFailed: '上传失败',
+    resultFail: '加载失败', resultFailModels: '加载模型失败', resultFailSkills: '加载技能失败',
+    textThinking: '思考过程', textResponse: '回复', textError: '错误',
+    toastEnterNameEndpoint: '请输入服务名称和端点', mcpToolsAvailable: '个可用工具',
+    navKnowledge: '知识库', knowledgeTitle: '知识库', knowledgeUpload: '上传TXT',
+    knowledgeAdd: '添加知识/角色', knowledgeName: '名称', knowledgeType: '类型',
+    knowledgeStatus: '状态', knowledgeCreated: '创建时间', knowledgeActions: '操作',
+    knowledgeSave: '保存并激活', knowledgeActive: '已激活', knowledgeInactive: '未激活',
+    knowledgeActivate: '激活', knowledgeDelete: '删除', knowledgeList: '知识库列表',
+    knowledgePlaceholder: '输入文本内容或上传TXT文件...', knowledgeBase: '知识库', roleSim: '角色模拟',
+    newChat: '新对话', newChatConfirm: '开始新对话？当前对话记录将被清除，但持久记忆保留。',
+    kbSaved: '知识已保存并激活', kbDeleted: '知识已删除', kbActivated: '知识已激活',
+    memoryList: '持久记忆', memoryTopic: '主题', memoryContent: '内容', memoryClear: '清除全部',
+    memoryEmpty: '暂无持久记忆',
+  },
+  en: {
+    navChat: 'Chat', navModels: 'Models', navSkills: 'Skills', navMcp: 'MCP', navSettings: 'Settings',
+    chatTitle: 'Chat', chatPlaceholder: 'Type a message and press Enter...', chatSend: 'Send',
+    chatThinking: 'Thinking...', chatWelcome: 'Welcome to ChatAI! Ask me anything. Try these:\n\n• Weather queries (e.g. "weather in Tokyo")\n• Calculations (e.g. "calculate 3+5*2")\n• Web searches (e.g. "search for AI news")',
+    modelTitle: 'Models', modelAvailable: 'Available Models', modelActive: 'Active',
+    modelLoading: 'Loading models...', modelSwitch: 'Switch', modelConfigure: 'Configure',
+    modelDisable: 'Disable', modelKeySet: 'Key set', modelNeedsEnabling: 'Needs enabling',
+    modelNeedsKey: 'Needs API key',
+    skillTitle: 'Skill Marketplace', skillUpload: 'Upload JAR', skillInstalled: 'Installed Skills',
+    skillName: 'Name', skillDesc: 'Description', skillVersion: 'Version', skillStatus: 'Status',
+    skillType: 'Type', skillActions: 'Actions', skillBuiltin: 'built-in', skillExternal: 'external',
+    skillEnabled: 'Enabled', skillDisabled: 'Disabled', skillEnable: 'Enable',
+    skillDisableBtn: 'Disable', skillRemove: 'Remove', skillLoading: 'Loading...',
+    mcpTitle: 'MCP Tools & Servers', mcpBuiltin: 'Built-in Servers', mcpAvailable: 'Available MCP Tools',
+    mcpConnect: 'Connect External MCP Server', mcpServerName: 'Server name',
+    mcpEndpoint: 'http://host:port/mcp', mcpConnectBtn: 'Connect',
+    mcpServer: 'Server', mcpType: 'Type', mcpTools: 'Tools', mcpStatus: 'Status',
+    mcpTool: 'Tool', mcpDescription: 'Description', mcpAction: 'Action',
+    mcpCall: 'Call', mcpConnected: 'Connected', mcpDisconnected: 'Disconnected',
+    settingsTitle: 'Settings', settingsLanguage: 'Interface Language',
+    settingsFollowLang: 'UI language follows AI response language',
+    settingsFollowDesc: 'When enabled, the UI automatically switches to match the language of the AI response.',
+    dialogTitle: 'Set API Key', dialogLabel: 'API Key',
+    dialogHint: 'Your key is stored in memory only and never persisted to disk.',
+    dialogCancel: 'Cancel', dialogSave: 'Save & Enable',
+    toastSwitched: 'Switched to', toastKeySaved: 'API key saved and model enabled',
+    toastModelDisabled: 'Model disabled', toastSkillLoaded: 'Skill loaded',
+    toastError: 'Error', toastFailedSwitch: 'Failed to switch model', toastFailed: 'Failed',
+    toastEnterKey: 'Please enter an API key', toastUploadFailed: 'Upload failed',
+    resultFail: 'Failed to load', resultFailModels: 'Failed to load models',
+    resultFailSkills: 'Failed to load skills',
+    textThinking: 'Thinking', textResponse: 'Response', textError: 'Error',
+    toastEnterNameEndpoint: 'Enter both name and endpoint', mcpToolsAvailable: 'tools available',
+    navKnowledge: 'Knowledge', knowledgeTitle: 'Knowledge Base',
+    knowledgeUpload: 'Upload TXT', knowledgeAdd: 'Add Knowledge / Role',
+    knowledgeName: 'Name', knowledgeType: 'Type', knowledgeStatus: 'Status',
+    knowledgeCreated: 'Created', knowledgeActions: 'Actions',
+    knowledgeSave: 'Save & Activate', knowledgeActive: 'Active', knowledgeInactive: 'Inactive',
+    knowledgeActivate: 'Activate', knowledgeDelete: 'Delete', knowledgeList: 'Knowledge List',
+    knowledgePlaceholder: 'Enter text content or upload a TXT file...',
+    knowledgeBase: 'Knowledge Base', roleSim: 'Role Simulation',
+    newChat: 'New Chat', newChatConfirm: 'Start a new conversation? Current chat will be cleared, but persistent memory is kept.',
+    kbSaved: 'Knowledge saved and activated', kbDeleted: 'Knowledge deleted',
+    kbActivated: 'Knowledge activated',
+    memoryList: 'Persistent Memory', memoryTopic: 'Topic', memoryContent: 'Content',
+    memoryClear: 'Clear All', memoryEmpty: 'No persistent memories yet',
+  }
+};
+
+let currentLang = localStorage.getItem('lang') || 'zh';
+let followAiLang = localStorage.getItem('followAiLang') === 'true';
+
+function t(key) {
+  return i18n[currentLang]?.[key] || i18n.en[key] || key;
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  refreshUi();
+}
+
+function updateLangAttributes() {
+  document.documentElement.lang = currentLang;
+}
+
+// Auto-detect language from text (simple heuristic: check for CJK characters)
+function detectLanguage(text) {
+  const cjkCount = (text.match(/[一-鿿㐀-䶿]/g) || []).length;
+  return cjkCount > text.length * 0.1 ? 'zh' : 'en';
+}
+
+function refreshUi() {
+  updateLangAttributes();
+  // Re-render all panel content
+  const activePanel = document.querySelector('.panel.active');
+  if (activePanel) {
+    const panelId = activePanel.id;
+    switch (panelId) {
+      case 'panel-chat': /* static labels updated via DOM */ break;
+      case 'panel-models': loadModels(); break;
+      case 'panel-skills': loadSkills(); break;
+      case 'panel-knowledge': loadKnowledge(); break;
+      case 'panel-mcp': loadMcp(); break;
+      case 'panel-settings': loadSettings(); break;
+    }
+  }
+  updateStaticLabels();
+}
+
+function updateStaticLabels() {
+  // Nav labels
+  document.querySelectorAll('.nav-item[data-panel="chat"] .label').forEach(el => el.textContent = t('navChat'));
+  document.querySelectorAll('.nav-item[data-panel="models"] .label').forEach(el => el.textContent = t('navModels'));
+  document.querySelectorAll('.nav-item[data-panel="skills"] .label').forEach(el => el.textContent = t('navSkills'));
+  document.querySelectorAll('.nav-item[data-panel="knowledge"] .label').forEach(el => el.textContent = t('navKnowledge'));
+  document.querySelectorAll('.nav-item[data-panel="mcp"] .label').forEach(el => el.textContent = t('navMcp'));
+  document.querySelectorAll('.nav-item[data-panel="settings"] .label').forEach(el => el.textContent = t('navSettings'));
+  // Chat panel
+  const chatTitle = document.querySelector('#panel-chat h1');
+  if (chatTitle) chatTitle.textContent = t('chatTitle');
+  const chatInput = document.getElementById('chatInput');
+  if (chatInput) chatInput.placeholder = t('chatPlaceholder');
+  const chatSend = document.querySelector('#panel-chat .btn-filled span.icon');
+  if (chatSend) chatSend.nextSibling.textContent = ' ' + t('chatSend');
+  const welcomeMsg = document.getElementById('welcomeMsg');
+  if (welcomeMsg) welcomeMsg.innerHTML = '<div class="model-tag">ChatAI</div>' + escHtml(t('chatWelcome'));
+  // Models panel
+  const modelTitle = document.querySelector('#panel-models h1');
+  if (modelTitle) modelTitle.textContent = t('modelTitle');
+  const availLabel = document.querySelector('#panel-models .section-label');
+  if (availLabel) availLabel.textContent = t('modelAvailable');
+  // Skills panel
+  const skillTitle = document.querySelector('#panel-skills h1');
+  if (skillTitle) skillTitle.textContent = t('skillTitle');
+  const skillUploadBtn = document.getElementById('skillUploadBtn');
+  if (skillUploadBtn) skillUploadBtn.innerHTML = '<span class="icon material-symbols-rounded">upload</span> ' + t('skillUpload');
+  const skillsLabel = document.getElementById('skillsSectionLabel');
+  if (skillsLabel) skillsLabel.textContent = t('skillInstalled');
+  // Skills table headers
+  ['skThName','skThDesc','skThVer','skThStatus','skThType','skThActions'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = [t('skillName'), t('skillDesc'), t('skillVersion'), t('skillStatus'), t('skillType'), t('skillActions')][i];
+  });
+  // MCP panel
+  const mcpTitle = document.querySelector('#panel-mcp h1');
+  if (mcpTitle) mcpTitle.textContent = t('mcpTitle');
+  const mcpBuiltin = document.getElementById('mcpBuiltinLabel');
+  if (mcpBuiltin) mcpBuiltin.textContent = t('mcpBuiltin');
+  const mcpAvailable = document.getElementById('mcpAvailableLabel');
+  if (mcpAvailable) mcpAvailable.textContent = t('mcpAvailable');
+  const mcpConnect = document.getElementById('mcpConnectLabel');
+  if (mcpConnect) mcpConnect.textContent = t('mcpConnect');
+  // MCP server table headers
+  ['mcpThServer','mcpThType','mcpThTools','mcpThStatus'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = [t('mcpServer'), t('mcpType'), t('mcpTools'), t('mcpStatus')][i];
+  });
+  // MCP tools table headers
+  ['mcpThServer2','mcpThTool','mcpThDesc','mcpThAction'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = [t('mcpServer'), t('mcpTool'), t('mcpDescription'), t('mcpAction')][i];
+  });
+  // MCP connect inputs
+  const mcpNameInput = document.getElementById('mcpName');
+  if (mcpNameInput) mcpNameInput.placeholder = t('mcpServerName');
+  const mcpEpInput = document.getElementById('mcpEndpoint');
+  if (mcpEpInput) mcpEpInput.placeholder = t('mcpEndpoint');
+  const mcpConnectBtn = document.getElementById('mcpConnectBtn');
+  if (mcpConnectBtn) mcpConnectBtn.innerHTML = '<span class="icon material-symbols-rounded">link</span> ' + t('mcpConnectBtn');
+  // Settings panel
+  const settingsTitle = document.querySelector('#panel-settings h1');
+  if (settingsTitle) settingsTitle.textContent = t('settingsTitle');
+  const settingsLangLabel = document.getElementById('settingsLangLabel');
+  if (settingsLangLabel) settingsLangLabel.textContent = t('settingsLanguage');
+  const settingsRowLabel = document.getElementById('settingsLangRowLabel');
+  if (settingsRowLabel) settingsRowLabel.textContent = t('settingsLanguage');
+  const settingsPrefsLabel = document.getElementById('settingsPrefsLabel');
+  if (settingsPrefsLabel) settingsPrefsLabel.textContent = t('settingsFollowLang');
+  const settingsFollowLabel = document.getElementById('settingsFollowLabel');
+  if (settingsFollowLabel) settingsFollowLabel.textContent = t('settingsFollowLang');
+  const settingsFollowDesc = document.getElementById('settingsFollowDesc');
+  if (settingsFollowDesc) settingsFollowDesc.textContent = t('settingsFollowDesc');
+  // Dialog
+  const dialogLabel = document.getElementById('keyDialogLabel');
+  if (dialogLabel) dialogLabel.textContent = t('dialogLabel');
+  const dialogHint = document.getElementById('keyDialogHint');
+  if (dialogHint) dialogHint.textContent = t('dialogHint');
+  const dialogCancel = document.getElementById('keyDialogCancelBtn');
+  if (dialogCancel) dialogCancel.textContent = t('dialogCancel');
+  const dialogSave = document.getElementById('keyDialogSaveBtn');
+  if (dialogSave) dialogSave.textContent = t('dialogSave');
+  // Open dialog needs title refresh too
+  const dialogTitle = document.getElementById('keyDialogTitle');
+  if (dialogTitle && currentKeyModelId) {
+    dialogTitle.textContent = t('dialogTitle') + ' - ' + (currentKeyModelName || '');
+  } else if (dialogTitle && !currentKeyModelId) {
+    dialogTitle.textContent = t('dialogTitle');
+  }
+  // Knowledge panel
+  const knowledgeTitle = document.querySelector('#panel-knowledge h1');
+  if (knowledgeTitle) knowledgeTitle.textContent = t('knowledgeTitle');
+  const knowledgeUploadBtn = document.getElementById('knowledgeUploadBtn');
+  if (knowledgeUploadBtn) knowledgeUploadBtn.innerHTML = '<span class="icon material-symbols-rounded">upload</span> ' + t('knowledgeUpload');
+  const knowledgeAddLabel = document.getElementById('knowledgeAddLabel');
+  if (knowledgeAddLabel) knowledgeAddLabel.textContent = t('knowledgeAdd');
+  const knowledgeListLabel = document.getElementById('knowledgeListLabel');
+  if (knowledgeListLabel) knowledgeListLabel.textContent = t('knowledgeList');
+  const kbName = document.getElementById('kbName');
+  if (kbName) kbName.placeholder = t('knowledgeName');
+  const kbContent = document.getElementById('kbContent');
+  if (kbContent) kbContent.placeholder = t('knowledgePlaceholder');
+  const knowledgeSaveBtn = document.getElementById('knowledgeSaveBtn');
+  if (knowledgeSaveBtn) knowledgeSaveBtn.innerHTML = '<span class="icon material-symbols-rounded">save</span> ' + t('knowledgeSave');
+  // Knowledge table headers
+  ['kbThName','kbThType','kbThStatus','kbThCreated','kbThActions'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = [t('knowledgeName'), t('knowledgeType'), t('knowledgeStatus'), t('knowledgeCreated'), t('knowledgeActions')][i];
+  });
+  // Memory table
+  const memListLabel = document.getElementById('memoryListLabel');
+  if (memListLabel) memListLabel.textContent = t('memoryList');
+  const memClearBtn = document.getElementById('memoryClearBtn');
+  if (memClearBtn) memClearBtn.textContent = t('memoryClear');
+  ['memThTopic','memThContent','memThActions'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = [t('memoryTopic'), t('memoryContent'), t('knowledgeActions')][i];
+  });
+  // New chat button
+  const newChatBtn = document.getElementById('newChatBtn');
+  if (newChatBtn) newChatBtn.innerHTML = '<span class="icon material-symbols-rounded">refresh</span> ' + t('newChat');
+}
+
 // ============= Theme Toggle =============
 function toggleTheme() {
   const html = document.documentElement;
@@ -756,7 +1196,9 @@ document.querySelectorAll('.nav-item').forEach(item => {
     switch(item.dataset.panel) {
       case 'models': loadModels(); break;
       case 'skills': loadSkills(); break;
+      case 'knowledge': loadKnowledge(); break;
       case 'mcp': loadMcp(); break;
+      case 'settings': loadSettings(); break;
     }
   });
 });
@@ -785,9 +1227,18 @@ async function sendChat() {
     removeLoading(loadingId);
     appendMsg('assistant', data.message, data.model);
     updateActiveModelBadge(data.model);
+
+    // Auto-detect and switch language if follow enabled
+    if (followAiLang && data.message) {
+      const detected = detectLanguage(data.message);
+      if (detected !== currentLang) {
+        setLanguage(detected);
+        loadSettings(); // refresh toggle states
+      }
+    }
   } catch(e) {
     removeLoading(loadingId);
-    appendMsg('assistant', 'Error: ' + e.message, '');
+    appendMsg('assistant', t('textError') + ': ' + e.message, '');
   }
 }
 
@@ -810,8 +1261,10 @@ function appendMsg(role, text, model) {
     if (thinkingMatch || responseMatch) {
       // Structured response
       if (thinkingMatch && thinkingMatch[1].trim()) {
-        html += `<div class="thinking-label">Thinking</div>`;
+        html += `<details class="thinking-details" open>`;
+        html += `<summary class="thinking-summary"><span class="thinking-label">${t('textThinking')}</span><span class="thinking-chevron material-symbols-rounded">expand_less</span></summary>`;
         html += `<div class="thinking-section">${escHtml(thinkingMatch[1].trim())}</div>`;
+        html += `</details>`;
       }
       if (responseMatch && responseMatch[1].trim()) {
         html += `<div class="response-section">${escHtml(responseMatch[1].trim())}</div>`;
@@ -838,7 +1291,7 @@ function appendMsg(role, text, model) {
 function appendLoading(id) {
   const div = document.createElement('div');
   div.className = 'msg assistant'; div.id = id;
-  div.innerHTML = `<div class="md3-spinner"><div class="md3-spinner-track"></div>Thinking...</div>`;
+  div.innerHTML = `<div class="md3-spinner"><div class="md3-spinner-track"></div>${t('chatThinking')}</div>`;
   document.getElementById('chatMessages').appendChild(div);
   div.scrollIntoView({behavior: 'smooth'});
 }
@@ -859,6 +1312,7 @@ updateActiveModelBadge();
 
 // ============= Models =============
 let currentKeyModelId = null;
+let currentKeyModelName = '';
 
 async function loadModels() {
   try {
@@ -872,17 +1326,17 @@ async function loadModels() {
       const needsConfig = !isMock && !m.hasKey;
       let actions = '';
       if (m.active) {
-        actions = '<span class="chip active" style="cursor:default"><span class="dot on"></span> Active</span>';
+        actions = `<span class="chip active" style="cursor:default"><span class="dot on"></span> ${t('modelActive')}</span>`;
       } else if (available) {
-        actions = `<button class="btn btn-outlined" onclick="event.stopPropagation();setActiveModel('${m.id}')" style="font-size:12px;padding:4px 12px">Switch</button>`;
+        actions = `<button class="btn btn-outlined" onclick="event.stopPropagation();setActiveModel('${m.id}')" style="font-size:12px;padding:4px 12px">${t('modelSwitch')}</button>`;
       }
       if (!isMock && (needsConfig || !m.enabled)) {
-        actions += `<button class="btn btn-filled" onclick="event.stopPropagation();openKeyDialog('${m.id}','${escHtml(m.name).replace(/'/g,"\\'")}')" style="font-size:12px;padding:4px 12px;margin-left:4px">Configure</button>`;
+        actions += `<button class="btn btn-filled" onclick="event.stopPropagation();openKeyDialog('${m.id}','${escHtml(m.name).replace(/'/g,"\\'")}')" style="font-size:12px;padding:4px 12px;margin-left:4px">${t('modelConfigure')}</button>`;
       }
       if (!isMock && !m.active && available) {
-        actions += `<button class="btn btn-outlined" onclick="event.stopPropagation();disableModel('${m.id}')" style="font-size:12px;padding:4px 12px;margin-left:4px">Disable</button>`;
+        actions += `<button class="btn btn-outlined" onclick="event.stopPropagation();disableModel('${m.id}')" style="font-size:12px;padding:4px 12px;margin-left:4px">${t('modelDisable')}</button>`;
       }
-      const statusText = !m.enabled ? 'Needs enabling' : (needsConfig ? 'Needs API key' : '');
+      const statusText = !m.enabled ? t('modelNeedsEnabling') : (needsConfig ? t('modelNeedsKey') : '');
       return `
       <div class="model-card ${statusClass}" ${available ? `onclick="setActiveModel('${m.id}')"` : ''}>
         <div class="model-icon" style="background:${m.color||'#58a6ff'}">
@@ -893,7 +1347,7 @@ async function loadModels() {
           <div class="model-desc">${escHtml(m.description||'')}</div>
           <div class="model-meta">
             <span class="chip">${m.type}</span>
-            ${m.hasKey ? '<span class="chip" style="background:rgba(63,185,80,0.15);color:#3fb950;border-color:rgba(63,185,80,0.3)">Key set</span>' : ''}
+            ${m.hasKey ? `<span class="chip" style="background:rgba(63,185,80,0.15);color:#3fb950;border-color:rgba(63,185,80,0.3)">${t('modelKeySet')}</span>` : ''}
             ${!available ? `<span class="chip warning">${statusText}</span>` : ''}
           </div>
           ${actions ? `<div class="model-actions">${actions}</div>` : ''}
@@ -901,7 +1355,7 @@ async function loadModels() {
       </div>
     `}).join('');
   } catch(e) {
-    document.getElementById('modelsGrid').innerHTML = '<div class="empty-state"><span class="icon material-symbols-rounded">error</span><h3>Failed to load models</h3></div>';
+    document.getElementById('modelsGrid').innerHTML = `<div class="empty-state"><span class="icon material-symbols-rounded">error</span><h3>${t('resultFailModels')}</h3></div>`;
   }
 }
 
@@ -912,14 +1366,15 @@ async function setActiveModel(id) {
     if (data.error) { showToast(data.error, true); loadModels(); return; }
     loadModels();
     updateActiveModelBadge();
-    showToast('Switched to ' + data.activeName);
-  } catch(e) { showToast('Failed to switch model: ' + e.message, true); }
+    showToast(t('toastSwitched') + ' ' + data.activeName);
+  } catch(e) { showToast(t('toastFailedSwitch') + ': ' + e.message, true); }
 }
 
 // ============= API Key Management =============
 function openKeyDialog(id, name) {
   currentKeyModelId = id;
-  document.getElementById('keyDialogTitle').textContent = 'Configure ' + name;
+  currentKeyModelName = name;
+  document.getElementById('keyDialogTitle').textContent = t('dialogTitle') + ' - ' + name;
   document.getElementById('keyDialogInput').value = '';
   document.getElementById('keyDialog').style.display = 'flex';
   document.getElementById('keyDialogInput').focus();
@@ -932,7 +1387,7 @@ function closeKeyDialog() {
 
 async function saveApiKey() {
   const key = document.getElementById('keyDialogInput').value.trim();
-  if (!key) { showToast('Please enter an API key', true); return; }
+  if (!key) { showToast(t('toastEnterKey'), true); return; }
   try {
     const res = await fetch('/api/models/' + currentKeyModelId + '/key', {
       method: 'PUT',
@@ -946,8 +1401,8 @@ async function saveApiKey() {
     if (enData.error) { showToast(enData.error, true); loadModels(); closeKeyDialog(); return; }
     closeKeyDialog();
     loadModels();
-    showToast('API key saved and model enabled');
-  } catch(e) { showToast('Failed: ' + e.message, true); }
+    showToast(t('toastKeySaved'));
+  } catch(e) { showToast(t('toastFailed') + ': ' + e.message, true); }
 }
 
 async function disableModel(id) {
@@ -955,9 +1410,38 @@ async function disableModel(id) {
     await fetch('/api/models/' + id + '/disable', {method: 'PUT'});
     loadModels();
     updateActiveModelBadge();
-    showToast('Model disabled');
-  } catch(e) { showToast('Failed: ' + e.message, true); }
+    showToast(t('toastModelDisabled'));
+  } catch(e) { showToast(t('toastFailed') + ': ' + e.message, true); }
 }
+
+// ============= Settings =============
+function loadSettings() {
+  // Language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === currentLang);
+  });
+  // Follow AI toggle
+  const toggle = document.getElementById('followAiToggle');
+  if (toggle) toggle.checked = followAiLang;
+  // Update static labels
+  updateStaticLabels();
+}
+
+function toggleFollowAiLang(enabled) {
+  followAiLang = enabled;
+  localStorage.setItem('followAiLang', enabled);
+}
+
+// Language button clicks
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('lang-btn')) {
+    setLanguage(e.target.dataset.lang);
+    loadSettings();
+  }
+});
+
+// Init settings on load
+loadSettings();
 
 // Close dialog on overlay click
 document.addEventListener('click', function(e) {
@@ -972,6 +1456,132 @@ function showToast(msg, isError) {
   setTimeout(() => { el.style.opacity='0'; el.style.transition='opacity 0.3s'; setTimeout(()=>el.remove(),300); }, 2500);
 }
 
+// ============= Knowledge Base =============
+async function loadKnowledge() {
+  try {
+    const res = await fetch('/api/knowledge');
+    const items = await res.json();
+    document.getElementById('knowledgeTable').innerHTML = items.length ? items.map(k => {
+      const isActive = k.active;
+      const typeLabel = k.type === 'role' ? t('roleSim') : t('knowledgeBase');
+      const statusClass = isActive ? 'active' : '';
+      const statusText = isActive ? t('knowledgeActive') : t('knowledgeInactive');
+      const created = new Date(k.createdAt).toLocaleDateString();
+      return `<tr>
+        <td><strong>${escHtml(k.name)}</strong></td>
+        <td><span class="chip">${typeLabel}</span></td>
+        <td><span class="chip ${statusClass}"><span class="dot ${isActive?'on':'off'}"></span> ${statusText}</span></td>
+        <td>${created}</td>
+        <td>
+          ${!isActive ? `<button class="btn btn-filled" onclick="activateKnowledge('${k.id}')" style="padding:6px 14px;font-size:12px">${t('knowledgeActivate')}</button>` : ''}
+          <button class="btn btn-danger" onclick="deleteKnowledge('${k.id}')" style="padding:6px 14px;font-size:12px;margin-left:6px">${t('knowledgeDelete')}</button>
+        </td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="5"><div class="empty-state"><span class="icon material-symbols-rounded">book</span><h3>${t('knowledgeList')}</h3></div></td></tr>`;
+  } catch(e) {
+    document.getElementById('knowledgeTable').innerHTML = `<tr><td colspan="5"><div class="empty-state"><span class="icon material-symbols-rounded">error</span><h3>${t('resultFail')}</h3></div></td></tr>`;
+  }
+  loadMemory();
+}
+
+async function loadMemory() {
+  try {
+    const res = await fetch('/api/memory/longterm');
+    const items = await res.json();
+    document.getElementById('memoryTable').innerHTML = items.length ? items.map(m => {
+      const created = new Date(m.createdAt).toLocaleDateString();
+      return `<tr>
+        <td><strong>${escHtml(m.topic)}</strong></td>
+        <td>${escHtml(m.content)}</td>
+        <td><button class="btn btn-danger" onclick="deleteMemory('${m.id}')" style="padding:6px 14px;font-size:12px">${t('knowledgeDelete')}</button></td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="3"><div class="empty-state"><span class="icon material-symbols-rounded">psychology</span><h3>${t('memoryEmpty')}</h3></div></td></tr>`;
+  } catch(e) {
+    document.getElementById('memoryTable').innerHTML = `<tr><td colspan="3"><div class="empty-state"><span class="icon material-symbols-rounded">error</span><h3>${t('resultFail')}</h3></div></td></tr>`;
+  }
+}
+
+async function deleteMemory(id) {
+  try {
+    await fetch('/api/memory/longterm/' + id, {method:'DELETE'});
+    loadMemory();
+  } catch(e) { showToast(t('toastFailed'), true); }
+}
+
+async function clearAllMemories() {
+  try {
+    await fetch('/api/memory/longterm', {method:'DELETE'});
+    showToast(t('kbDeleted'));
+    loadMemory();
+  } catch(e) { showToast(t('toastFailed'), true); }
+}
+
+async function uploadKnowledge() {
+  const file = document.getElementById('knowledgeFile').files[0];
+  if (!file) return;
+  const type = document.getElementById('kbType').value;
+  const fd = new FormData(); fd.append('file', file); fd.append('type', type);
+  try {
+    const res = await fetch('/api/knowledge/upload', {method:'POST', body: fd});
+    const data = await res.json();
+    if (data.error) { showToast(t('toastError') + ': ' + data.error, true); return; }
+    showToast(t('kbSaved'));
+    document.getElementById('knowledgeFile').value = '';
+    loadKnowledge();
+  } catch(e) { showToast(t('toastUploadFailed') + ': ' + e.message, true); }
+}
+
+async function saveKnowledgeText() {
+  const name = document.getElementById('kbName').value.trim();
+  const type = document.getElementById('kbType').value;
+  const content = document.getElementById('kbContent').value.trim();
+  if (!content) { showToast(t('knowledgePlaceholder'), true); return; }
+  try {
+    const res = await fetch('/api/knowledge/text', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name: name || 'Untitled', type, content, active: true})
+    });
+    const data = await res.json();
+    if (data.error) { showToast(t('toastError') + ': ' + data.error, true); return; }
+    showToast(t('kbSaved'));
+    document.getElementById('kbName').value = '';
+    document.getElementById('kbContent').value = '';
+    loadKnowledge();
+  } catch(e) { showToast(t('toastFailed') + ': ' + e.message, true); }
+}
+
+async function activateKnowledge(id) {
+  try {
+    const res = await fetch('/api/knowledge/' + id + '/active', {method:'PUT'});
+    const data = await res.json();
+    if (data.error) { showToast(t('toastError') + ': ' + data.error, true); return; }
+    showToast(t('kbActivated'));
+    loadKnowledge();
+  } catch(e) { showToast(t('toastFailed') + ': ' + e.message, true); }
+}
+
+async function deleteKnowledge(id) {
+  try {
+    await fetch('/api/knowledge/' + id, {method:'DELETE'});
+    showToast(t('kbDeleted'));
+    loadKnowledge();
+  } catch(e) { showToast(t('toastFailed') + ': ' + e.message, true); }
+}
+
+// ============= End Conversation =============
+async function endConversation() {
+  if (!confirm(t('newChatConfirm'))) return;
+  try {
+    const res = await fetch('/api/sessions/' + sessionId + '/reset', {method:'POST'});
+    const data = await res.json();
+    sessionId = data.sessionId;
+    // Clear chat messages except welcome
+    const msgContainer = document.getElementById('chatMessages');
+    msgContainer.innerHTML = `<div class="msg assistant" id="welcomeMsg"><div class="model-tag">ChatAI</div>${escHtml(t('chatWelcome'))}</div>`;
+    showToast(data.status === 'reset' ? t('newChat') : t('resultFail'));
+  } catch(e) { showToast(t('toastFailed') + ': ' + e.message, true); }
+}
+
 // ============= Skills =============
 async function loadSkills() {
   try {
@@ -982,18 +1592,18 @@ async function loadSkills() {
         <td><strong>${escHtml(s.name)}</strong></td>
         <td>${escHtml(s.description)}</td>
         <td>${s.version}</td>
-        <td><span class="chip ${s.enabled?'active':''}"><span class="dot ${s.enabled?'on':'off'}"></span> ${s.enabled?'Enabled':'Disabled'}</span></td>
-        <td><span class="chip">${s.builtin?'built-in':'external'}</span></td>
+        <td><span class="chip ${s.enabled?'active':''}"><span class="dot ${s.enabled?'on':'off'}"></span> ${s.enabled ? t('skillEnabled') : t('skillDisabled')}</span></td>
+        <td><span class="chip">${s.builtin ? t('skillBuiltin') : t('skillExternal')}</span></td>
         <td>
           ${s.enabled
-            ? `<button class="btn btn-outlined" onclick="toggleSkill('${s.name}',false)" style="padding:6px 14px;font-size:12px">Disable</button>`
-            : `<button class="btn btn-filled" onclick="toggleSkill('${s.name}',true)" style="padding:6px 14px;font-size:12px">Enable</button>`}
-          ${!s.builtin ? `<button class="btn btn-danger" onclick="deleteSkill('${s.name}')" style="padding:6px 14px;font-size:12px;margin-left:6px">Remove</button>` : ''}
+            ? `<button class="btn btn-outlined" onclick="toggleSkill('${s.name}',false)" style="padding:6px 14px;font-size:12px">${t('skillDisableBtn')}</button>`
+            : `<button class="btn btn-filled" onclick="toggleSkill('${s.name}',true)" style="padding:6px 14px;font-size:12px">${t('skillEnable')}</button>`}
+          ${!s.builtin ? `<button class="btn btn-danger" onclick="deleteSkill('${s.name}')" style="padding:6px 14px;font-size:12px;margin-left:6px">${t('skillRemove')}</button>` : ''}
         </td>
       </tr>
     `).join('');
   } catch(e) {
-    document.getElementById('skillsTable').innerHTML = '<tr><td colspan="6"><div class="empty-state"><span class="icon material-symbols-rounded">error</span><h3>Failed to load skills</h3></div></td></tr>';
+    document.getElementById('skillsTable').innerHTML = `<tr><td colspan="6"><div class="empty-state"><span class="icon material-symbols-rounded">error</span><h3>${t('resultFailSkills')}</h3></div></td></tr>`;
   }
 }
 
@@ -1003,7 +1613,7 @@ async function toggleSkill(name, enable) {
 }
 
 async function deleteSkill(name) {
-  if (!confirm('Remove skill "' + name + '"?')) return;
+  if (!confirm(t('skillRemove') + ' "' + name + '"?')) return;
   await fetch(`/api/skills/${name}`, {method:'DELETE'});
   loadSkills();
 }
@@ -1015,10 +1625,10 @@ async function uploadSkill() {
   try {
     const res = await fetch('/api/skills/upload', {method:'POST', body: fd});
     const data = await res.json();
-    if (data.error) { alert('Error: ' + data.error); return; }
-    showToast('Skill loaded: ' + data.skillName);
+    if (data.error) { showToast(t('toastError') + ': ' + data.error, true); return; }
+    showToast(t('toastSkillLoaded') + ': ' + data.skillName);
     loadSkills();
-  } catch(e) { alert('Upload failed: ' + e.message); }
+  } catch(e) { showToast(t('toastUploadFailed') + ': ' + e.message, true); }
 }
 
 // ============= MCP =============
@@ -1031,9 +1641,9 @@ async function loadMcp() {
         <td><strong>${escHtml(s.name)}</strong></td>
         <td><span class="chip">${s.type}</span></td>
         <td>${s.toolCount}</td>
-        <td><span class="chip active"><span class="dot on"></span> Connected</span></td>
+        <td><span class="chip active"><span class="dot on"></span> ${t('mcpConnected')}</span></td>
       </tr>
-    `).join('') : '<tr><td colspan="4"><div class="empty-state"><span class="icon material-symbols-rounded">dns</span><h3>No servers</h3></div></td></tr>';
+    `).join('') : `<tr><td colspan="4"><div class="empty-state"><span class="icon material-symbols-rounded">dns</span><h3>${t('mcpDisconnected')}</h3></div></td></tr>`;
 
     const tRes = await fetch('/api/mcp/tools');
     const tools = await tRes.json();
@@ -1042,16 +1652,16 @@ async function loadMcp() {
         <td>${escHtml(t.server)}</td>
         <td><strong>${escHtml(t.name)}</strong></td>
         <td>${escHtml(t.description)}</td>
-        <td><button class="btn btn-outlined" onclick="callMcpTool('${t.name}')" style="padding:6px 14px;font-size:12px"><span class="icon material-symbols-rounded" style="font-size:16px">play_arrow</span> Test</button></td>
+        <td><button class="btn btn-outlined" onclick="callMcpTool('${t.name}')" style="padding:6px 14px;font-size:12px"><span class="icon material-symbols-rounded" style="font-size:16px">play_arrow</span> ${t('mcpCall')}</button></td>
       </tr>
-    `).join('') : '<tr><td colspan="4"><div class="empty-state"><span class="icon material-symbols-rounded">build</span><h3>No MCP tools available</h3></div></td></tr>';
+    `).join('') : `<tr><td colspan="4"><div class="empty-state"><span class="icon material-symbols-rounded">build</span><h3>${t('resultFail')}</h3></div></td></tr>`;
   } catch(e) { console.error(e); }
 }
 
 async function connectMcp() {
   const name = document.getElementById('mcpName').value.trim();
   const endpoint = document.getElementById('mcpEndpoint').value.trim();
-  if (!name || !endpoint) return showToast('Enter both name and endpoint');
+  if (!name || !endpoint) return showToast(t('toastEnterNameEndpoint'));
   try {
     const res = await fetch('/api/mcp/servers', {
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -1062,7 +1672,7 @@ async function connectMcp() {
       document.getElementById('mcpCallResult').innerHTML = `<pre style="color:var(--md-sys-color-error)">${escHtml(data.error)}</pre>`;
       return;
     }
-    document.getElementById('mcpCallResult').innerHTML = `<pre>Connected to <strong>${escHtml(name)}</strong> — ${data.tools} tools available</pre>`;
+    document.getElementById('mcpCallResult').innerHTML = `<pre>${t('mcpConnected')} <strong>${escHtml(name)}</strong> — ${data.tools} ${t('mcpToolsAvailable')}</pre>`;
     loadMcp();
   } catch(e) {
     document.getElementById('mcpCallResult').innerHTML = `<pre style="color:var(--md-sys-color-error)">${escHtml(e.message)}</pre>`;

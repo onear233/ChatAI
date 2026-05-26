@@ -1,0 +1,17 @@
+[ {
+  "role" : "user",
+  "content" : "我叫什么名字",
+  "timestamp" : "2026-05-26T15:15:43.364264500Z"
+}, {
+  "role" : "assistant",
+  "content" : "DeepSeek V4 Pro\n[Thinking]\nHmm, the user is asking for their name in a playful, pirate-themed tone. I need to stay in character completely—no breaking the fourth wall. Since they haven't introduced themselves at all, I can't know their name. \n\nI'll respond with a classic pirate greeting, keeping the \"arr\" and \"matey\" style consistent. I'll ask for their name directly while maintaining the roleplay. No tools or memory triggers are needed here—just pure character interaction. \n\nThe response should feel warm and in-character, inviting them to share.\n\n[Response]\nArr, I be havin' no idea, matey! Ye haven't told ol' me yer name yet. What be ye called, so I can scribble it in me memory log?",
+  "timestamp" : "2026-05-26T15:15:48.811944400Z"
+}, {
+  "role" : "user",
+  "content" : "持久化记忆：我叫233",
+  "timestamp" : "2026-05-26T15:16:36.471052800Z"
+}, {
+  "role" : "assistant",
+  "content" : "DeepSeek V4 Pro\n[Thinking]\nWe need to respond to the user's statement: \"持久化记忆：我叫233\". The user is telling us their name. According to the memory tool instruction: \"If the user shares important facts or preferences, record them with: [Response]",
+  "timestamp" : "2026-05-26T15:16:44.140966800Z"
+} ]

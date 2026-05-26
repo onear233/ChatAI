@@ -2,6 +2,7 @@ package com.onear.chatai.web.controller;
 
 import com.onear.chatai.agent.AgentOrchestrator;
 import com.onear.chatai.memory.ChatMessage;
+import com.onear.chatai.memory.LongTermMemory;
 import com.onear.chatai.memory.MemoryManager;
 import com.onear.chatai.model.ModelRegistry;
 import com.onear.chatai.web.dto.ChatRequest;
@@ -9,10 +10,7 @@ import com.onear.chatai.web.dto.ChatResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -21,11 +19,14 @@ public class AgentController {
     private final AgentOrchestrator orchestrator;
     private final MemoryManager memoryManager;
     private final ModelRegistry modelRegistry;
+    private final LongTermMemory longTermMemory;
 
-    public AgentController(AgentOrchestrator orchestrator, MemoryManager memoryManager, ModelRegistry modelRegistry) {
+    public AgentController(AgentOrchestrator orchestrator, MemoryManager memoryManager,
+                           ModelRegistry modelRegistry, LongTermMemory longTermMemory) {
         this.orchestrator = orchestrator;
         this.memoryManager = memoryManager;
         this.modelRegistry = modelRegistry;
+        this.longTermMemory = longTermMemory;
     }
 
     @PostMapping("/chat")
@@ -43,7 +44,8 @@ public class AgentController {
     }
 
     @GetMapping("/sessions/{id}/history")
-    public ResponseEntity<Map<String, Object>> getHistory(@PathVariable String id, @RequestParam(defaultValue = "50") int max) {
+    public ResponseEntity<Map<String, Object>> getHistory(@PathVariable String id,
+                                                          @RequestParam(defaultValue = "50") int max) {
         var history = memoryManager.getHistory(id, max);
         return ResponseEntity.ok(Map.of("sessionId", id, "messages", history, "count", history.size()));
     }
@@ -52,6 +54,18 @@ public class AgentController {
     public ResponseEntity<Map<String, String>> deleteSession(@PathVariable String id) {
         memoryManager.clear(id);
         return ResponseEntity.ok(Map.of("status", "deleted", "sessionId", id));
+    }
+
+    @PostMapping("/sessions/{id}/reset")
+    public ResponseEntity<Map<String, Object>> resetSession(@PathVariable String id) {
+        orchestrator.resetSession(id);
+        String newSessionId = UUID.randomUUID().toString().substring(0, 8);
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("status", "reset");
+        result.put("oldSessionId", id);
+        result.put("sessionId", newSessionId);
+        result.put("longTermMemories", longTermMemory.list().size());
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/sessions")
