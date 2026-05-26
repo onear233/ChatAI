@@ -1,0 +1,33 @@
+[ {
+  "role" : "user",
+  "content" : "hello",
+  "timestamp" : "2026-05-26T03:48:29.181057700Z"
+}, {
+  "role" : "assistant",
+  "content" : "Hello! How can I help you?",
+  "timestamp" : "2026-05-26T03:48:29.202606Z"
+}, {
+  "role" : "user",
+  "content" : "weather in Tokyo",
+  "timestamp" : "2026-05-26T03:48:29.280658Z"
+}, {
+  "role" : "assistant",
+  "content" : "Hello! I'm the ChatAI agent. I can help you with:\n- Weather queries (e.g., \"weather in Beijing\")\n- Calculations (e.g., \"calculate 3 + 5 * 2\")\n- Web searches (e.g., \"search for AI news\")\n\nYou said: Hello! How can I help you?",
+  "timestamp" : "2026-05-26T03:48:29.281665300Z"
+}, {
+  "role" : "user",
+  "content" : "calculate 3+5*2",
+  "timestamp" : "2026-05-26T03:48:29.348531200Z"
+}, {
+  "role" : "assistant",
+  "content" : "Weather in Beijing: Overcast, Temperature: 14°C, Humidity: 75%",
+  "timestamp" : "2026-05-26T03:48:29.360700400Z"
+}, {
+  "role" : "user",
+  "content" : "search for AI news",
+  "timestamp" : "2026-05-26T03:48:29.429419700Z"
+}, {
+  "role" : "assistant",
+  "content" : "Weather in Beijing: Windy, Temperature: 11°C, Humidity: 46%",
+  "timestamp" : "2026-05-26T03:48:29.432665400Z"
+} ]

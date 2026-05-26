@@ -1,0 +1,9 @@
+[ {
+  "role" : "user",
+  "content" : "weather in Tokyo",
+  "timestamp" : "2026-05-26T03:51:12.870520500Z"
+}, {
+  "role" : "assistant",
+  "content" : "Hello! How can I help you?",
+  "timestamp" : "2026-05-26T03:51:12.872024800Z"
+} ]

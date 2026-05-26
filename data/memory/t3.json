@@ -1,0 +1,9 @@
+[ {
+  "role" : "user",
+  "content" : "search for quantum computing",
+  "timestamp" : "2026-05-26T03:53:09.242566400Z"
+}, {
+  "role" : "assistant",
+  "content" : "Search results for \"quantum computing\":\n\n1. Quantum computing — Overview\n   https://en.wikipedia.org/wiki/quantum-computing\n   A comprehensive overview of quantum computing covering key concepts, history, and applications.\n\n2. Latest developments in Quantum computing\n   https://news.example.com/quantum-computing\n   Recent news and updates about quantum computing as of 2026-05-26T03:53:09.\n\n3. Quantum computing — Technical Reference\n   https://docs.example.com/quantum-computing\n   Technical documentation and API reference for quantum computing.\n",
+  "timestamp" : "2026-05-26T03:53:09.245620200Z"
+} ]

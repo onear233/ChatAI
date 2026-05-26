@@ -1,0 +1,17 @@
+[ {
+  "role" : "user",
+  "content" : "weather in Tokyo",
+  "timestamp" : "2026-05-26T03:51:42.533970800Z"
+}, {
+  "role" : "assistant",
+  "content" : "Hello! How can I help you?",
+  "timestamp" : "2026-05-26T03:51:42.535479100Z"
+}, {
+  "role" : "user",
+  "content" : "weather in Tokyo",
+  "timestamp" : "2026-05-26T03:52:35.533367600Z"
+}, {
+  "role" : "assistant",
+  "content" : "Weather in Tokyo: Windy, Temperature: -5°C, Humidity: 33%",
+  "timestamp" : "2026-05-26T03:52:35.551683200Z"
+} ]

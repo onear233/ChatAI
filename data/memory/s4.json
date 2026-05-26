@@ -1,0 +1,9 @@
+[ {
+  "role" : "user",
+  "content" : "Hi, what can you do?",
+  "timestamp" : "2026-05-26T03:50:09.472307300Z"
+}, {
+  "role" : "assistant",
+  "content" : "Hello! How can I help you?",
+  "timestamp" : "2026-05-26T03:50:09.472307300Z"
+} ]

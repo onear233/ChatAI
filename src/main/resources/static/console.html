@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatAI Console</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
+<style>
+/* ============= MD3 Design Tokens ============= */
+:root {
+  /* Primary */
+  --md-sys-color-primary: #aac7ff;
+  --md-sys-color-on-primary: #00315e;
+  --md-sys-color-primary-container: #004785;
+  --md-sys-color-on-primary-container: #d5e3ff;
+  /* Secondary */
+  --md-sys-color-secondary: #bfc6dc;
+  --md-sys-color-on-secondary: #293041;
+  --md-sys-color-secondary-container: #3f4759;
+  --md-sys-color-on-secondary-container: #dbe2f9;
+  /* Tertiary */
+  --md-sys-color-tertiary: #ddbce1;
+  --md-sys-color-on-tertiary: #3e2845;
+  --md-sys-color-tertiary-container: #573e5c;
+  --md-sys-color-on-tertiary-container: #fad8fe;
+  /* Error */
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  /* Surface */
+  --md-sys-color-surface: #111318;
+  --md-sys-color-on-surface: #e2e2e9;
+  --md-sys-color-surface-variant: #43474e;
+  --md-sys-color-on-surface-variant: #c4c6cf;
+  --md-sys-color-surface-container-low: #1a1c21;
+  --md-sys-color-surface-container: #1e2025;
+  --md-sys-color-surface-container-high: #282a30;
+  --md-sys-color-surface-container-highest: #33353b;
+  --md-sys-color-inverse-surface: #e2e2e9;
+  --md-sys-color-inverse-on-surface: #2f3036;
+  /* Outline */
+  --md-sys-color-outline: #8e9098;
+  --md-sys-color-outline-variant: #43474e;
+  --md-sys-color-outline-variant-soft: rgba(142,144,152,0.12);
+  /* Elevation */
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --md-sys-elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+  --md-sys-elevation-3: 0 1px 3px rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
+  /* Shape */
+  --md-sys-shape-corner-xs: 4px;
+  --md-sys-shape-corner-sm: 8px;
+  --md-sys-shape-corner-md: 12px;
+  --md-sys-shape-corner-lg: 16px;
+  --md-sys-shape-corner-xl: 28px;
+  --md-sys-shape-corner-full: 100px;
+  /* Typography */
+  --md-sys-typescale-display-large: 400 57px/64px 'Google Sans', 'Roboto', sans-serif;
+  --md-sys-typescale-headline-medium: 400 28px/36px 'Google Sans', 'Roboto', sans-serif;
+  --md-sys-typescale-title-large: 400 22px/28px 'Google Sans', 'Roboto', sans-serif;
+  --md-sys-typescale-title-medium: 500 16px/24px 'Roboto', sans-serif;
+  --md-sys-typescale-title-small: 500 14px/20px 'Roboto', sans-serif;
+  --md-sys-typescale-body-large: 400 16px/24px 'Roboto', sans-serif;
+  --md-sys-typescale-body-medium: 400 14px/20px 'Roboto', sans-serif;
+  --md-sys-typescale-body-small: 400 12px/16px 'Roboto', sans-serif;
+  --md-sys-typescale-label-large: 500 14px/20px 'Roboto', sans-serif;
+  --md-sys-typescale-label-medium: 500 12px/16px 'Roboto', sans-serif;
+  /* Transitions */
+  --md-sys-motion-duration-short: 200ms;
+  --md-sys-motion-duration-medium: 400ms;
+  --md-sys-motion-easing-standard: cubic-bezier(0.2,0,0,1);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.05,0.7,0.1,1);
+}
+
+[data-theme="light"] {
+  --md-sys-color-primary: #345e9e;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d5e3ff;
+  --md-sys-color-on-primary-container: #001b3d;
+  --md-sys-color-secondary: #535f70;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #dbe2f9;
+  --md-sys-color-on-secondary-container: #101c2b;
+  --md-sys-color-surface: #f8f9ff;
+  --md-sys-color-on-surface: #191c20;
+  --md-sys-color-surface-variant: #e0e2ec;
+  --md-sys-color-on-surface-variant: #43474e;
+  --md-sys-color-surface-container-low: #f0f3fa;
+  --md-sys-color-surface-container: #e9ecf3;
+  --md-sys-color-surface-container-high: #e0e3ea;
+  --md-sys-color-surface-container-highest: #dadde4;
+  --md-sys-color-inverse-surface: #2f3036;
+  --md-sys-color-inverse-on-surface: #f0f0f7;
+  --md-sys-color-outline: #73777f;
+  --md-sys-color-outline-variant: #c4c6cf;
+  --md-sys-color-outline-variant-soft: rgba(115,119,127,0.12);
+  --md-sys-elevation-1: 0 1px 2px rgba(0,0,0,0.08), 0 1px 3px 1px rgba(0,0,0,0.04);
+  --md-sys-elevation-2: 0 1px 2px rgba(0,0,0,0.08), 0 2px 6px 2px rgba(0,0,0,0.04);
+  --md-sys-elevation-3: 0 1px 3px rgba(0,0,0,0.08), 0 4px 8px 3px rgba(0,0,0,0.04);
+}
+
+/* ============= Global Reset ============= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font: var(--md-sys-typescale-body-medium);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============= Navigation Rail ============= */
+.nav-rail {
+  width: 80px;
+  background: var(--md-sys-color-surface-container);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 4px;
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.nav-logo {
+  width: 44px; height: 44px;
+  border-radius: var(--md-sys-shape-corner-md);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 4px;
+  padding: 12px 4px 8px;
+  width: 72px;
+  border-radius: var(--md-sys-shape-corner-full);
+  cursor: pointer;
+  transition: background var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  background: none;
+  font-family: inherit;
+  position: relative;
+}
+.nav-item:hover { background: var(--md-sys-color-outline-variant-soft); }
+.nav-item .icon {
+  font-size: 24px;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+}
+.nav-item .label {
+  font: var(--md-sys-typescale-label-medium);
+  white-space: nowrap;
+}
+.nav-item.active { color: var(--md-sys-color-primary); }
+.nav-item.active .icon { font-variation-settings: 'FILL' 1; }
+.nav-item.active::before {
+  content: '';
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 32px;
+  border-radius: 0 3px 3px 0;
+  background: var(--md-sys-color-primary);
+}
+
+.nav-spacer { flex: 1; }
+
+.theme-toggle {
+  width: 48px; height: 48px;
+  border-radius: var(--md-sys-shape-corner-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+  font-size: 22px;
+}
+.theme-toggle:hover { background: var(--md-sys-color-surface-container-highest); }
+
+/* ============= Main Content ============= */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+.panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+.panel.active { display: flex; }
+
+/* ============= Top App Bar ============= */
+.top-bar {
+  padding: 16px 24px;
+  background: var(--md-sys-color-surface-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  display: flex; align-items: center; gap: 16px;
+  min-height: 64px;
+}
+.top-bar h1 { font: var(--md-sys-typescale-title-large); flex: 1; }
+.top-bar .badge {
+  padding: 6px 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font: var(--md-sys-typescale-label-medium);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ============= Content Area ============= */
+.content {
+  flex: 1; overflow-y: auto; padding: 24px;
+  scroll-behavior: smooth;
+}
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-track { background: transparent; }
+.content::-webkit-scrollbar-thumb { background: var(--md-sys-color-outline-variant); border-radius: 3px; }
+
+/* ============= Chat Panel ============= */
+.chat-container { display: flex; flex-direction: column; height: 100%; }
+
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 24px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.chat-messages::-webkit-scrollbar { width: 6px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--md-sys-color-outline-variant); border-radius: 3px; }
+
+.msg {
+  max-width: 75%;
+  padding: 14px 18px;
+  border-radius: var(--md-sys-shape-corner-lg);
+  font: var(--md-sys-typescale-body-medium);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  animation: msgIn var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized);
+}
+@keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.msg.user {
+  align-self: flex-end;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-bottom-right-radius: 4px;
+}
+.msg.assistant {
+  align-self: flex-start;
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom-left-radius: 4px;
+}
+
+.msg.model-tag {
+  font: var(--md-sys-typescale-label-small);
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+/* ============= MD3 Circular Progress (Loading) ============= */
+.md3-spinner {
+  display: flex; align-items: center; gap: 12px;
+  padding: 4px 0;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-body-medium);
+}
+.md3-spinner-track {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid var(--md-sys-color-outline-variant);
+  border-top-color: var(--md-sys-color-primary);
+  animation: md3-spin 0.8s linear infinite;
+}
+@keyframes md3-spin { to { transform: rotate(360deg); } }
+
+/* ============= Message Sections ============= */
+.model-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--md-sys-shape-corner-xs);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font: var(--md-sys-typescale-label-medium);
+  margin-bottom: 12px;
+}
+.model-badge .icon {
+  font-size: 16px;
+  font-variation-settings: 'FILL' 1;
+}
+
+.thinking-section {
+  margin: 12px 0;
+  padding: 12px 16px;
+  border-radius: var(--md-sys-shape-corner-sm);
+  background: var(--md-sys-color-surface-container-low);
+  border-left: 3px solid var(--md-sys-color-outline-variant);
+  font: var(--md-sys-typescale-body-small);
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.75;
+  line-height: 1.5;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.thinking-label {
+  font: var(--md-sys-typescale-label-small);
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.response-section {
+  font: var(--md-sys-typescale-body-large);
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.7;
+}
+
+/* ============= Chat Input Area ============= */
+.chat-input-area {
+  padding: 16px 24px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  display: flex; gap: 12px; align-items: center;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: var(--md-sys-shape-corner-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  font: var(--md-sys-typescale-body-large);
+  outline: none;
+  transition: border-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+.chat-input:focus { border-color: var(--md-sys-color-primary); }
+.chat-input::placeholder { color: var(--md-sys-color-on-surface-variant); }
+
+/* ============= MD3 Buttons ============= */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font: var(--md-sys-typescale-label-large);
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+  border: none;
+  white-space: nowrap;
+}
+.btn .icon { font-size: 18px; }
+
+.btn-filled {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: var(--md-sys-elevation-1);
+}
+.btn-filled:hover { box-shadow: var(--md-sys-elevation-2); filter: brightness(1.08); }
+
+.btn-tonal {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+.btn-tonal:hover { filter: brightness(1.08); }
+
+.btn-outlined {
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+.btn-outlined:hover { background: var(--md-sys-color-outline-variant-soft); }
+
+.btn-text {
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  padding: 10px 12px;
+}
+.btn-text:hover { background: var(--md-sys-color-outline-variant-soft); }
+
+.btn-danger {
+  background: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+.btn-danger:hover { filter: brightness(1.1); }
+
+.btn-icon {
+  width: 40px; height: 40px; padding: 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  border: none;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+.btn-icon:hover { background: var(--md-sys-color-outline-variant-soft); }
+.btn-icon .icon { font-size: 20px; }
+
+/* ============= MD3 Cards ============= */
+.card {
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: var(--md-sys-shape-corner-md);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 20px;
+  transition: box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+.card:hover { box-shadow: var(--md-sys-elevation-1); }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+/* ============= MD3 Chips ============= */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 14px;
+  border-radius: var(--md-sys-shape-corner-sm);
+  font: var(--md-sys-typescale-label-medium);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.chip.active { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); border-color: transparent; }
+.chip.warning { background: rgba(255,180,0,0.15); color: #f0b800; border-color: rgba(240,184,0,0.3); }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+.chip .dot.on { background: #3fb950; box-shadow: 0 0 4px #3fb950; }
+.chip .dot.off { background: #8e9098; }
+
+/* ============= MD3 Table ============= */
+.table-container {
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: var(--md-sys-shape-corner-md);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px 20px; text-align: left; }
+th {
+  font: var(--md-sys-typescale-label-medium);
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-container-high);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+td {
+  font: var(--md-sys-typescale-body-medium);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant-soft);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--md-sys-color-outline-variant-soft); }
+
+/* ============= Model Card ============= */
+.model-card {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 20px;
+  border-radius: var(--md-sys-shape-corner-md);
+  border: 2px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-low);
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  cursor: pointer;
+  position: relative;
+}
+.model-card:hover { border-color: var(--md-sys-color-outline); box-shadow: var(--md-sys-elevation-1); }
+.model-card.selected {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+  box-shadow: var(--md-sys-elevation-2);
+}
+.model-card.selected::after {
+  content: 'check_circle';
+  font-family: 'Material Symbols Rounded';
+  position: absolute; top: 12px; right: 12px;
+  font-size: 20px; color: var(--md-sys-color-primary);
+  font-variation-settings: 'FILL' 1;
+}
+.model-icon {
+  width: 48px; height: 48px; border-radius: var(--md-sys-shape-corner-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: #fff; flex-shrink: 0;
+}
+.model-info { flex: 1; }
+.model-name { font: var(--md-sys-typescale-title-small); margin-bottom: 4px; }
+.model-desc { font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); }
+.model-card.disabled { opacity: 0.55; cursor: not-allowed; }
+.model-card.disabled:hover { border-color: var(--md-sys-color-outline-variant); box-shadow: none; }
+.model-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.model-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+
+/* ============= Dialog ============= */
+.dialog-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.dialog {
+  background: var(--md-sys-color-surface-container-high);
+  border-radius: var(--md-sys-shape-corner-lg);
+  padding: 24px; min-width: 400px; max-width: 90vw;
+  box-shadow: var(--md-sys-elevation-3);
+}
+.dialog-title { font: var(--md-sys-typescale-title-large); margin-bottom: 20px; }
+.dialog-body { margin-bottom: 24px; }
+.dialog-label { font: var(--md-sys-typescale-label-medium); color: var(--md-sys-color-on-surface-variant); display: block; margin-bottom: 8px; }
+.dialog-hint { font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); margin-top: 8px; }
+.md3-input {
+  width: 100%; padding: 12px 16px;
+  border-radius: var(--md-sys-shape-corner-sm);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+  font: var(--md-sys-typescale-body-large);
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.md3-input:focus { border-color: var(--md-sys-color-primary); outline: none; }
+.dialog-actions { display: flex; gap: 12px; justify-content: flex-end; }
+
+/* ============= Section Header ============= */
+.section-header {
+  font: var(--md-sys-typescale-title-medium);
+  color: var(--md-sys-color-on-surface);
+  margin: 8px 0 16px;
+}
+.section-label {
+  font: var(--md-sys-typescale-label-medium);
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 24px 0 12px;
+}
+
+/* ============= Status Indicator ============= */
+.status-dot {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+}
+.status-dot.online { background: #3fb950; box-shadow: 0 0 6px rgba(63,185,80,0.4); }
+.status-dot.offline { background: #f85149; }
+.status-dot.idle { background: #d29922; }
+
+/* ============= Code Block ============= */
+pre {
+  background: var(--md-sys-color-surface-container-highest);
+  border-radius: var(--md-sys-shape-corner-sm);
+  padding: 16px;
+  overflow-x: auto;
+  font: 400 13px/1.5 'JetBrains Mono', 'Fira Code', monospace;
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* ============= Toolbar ============= */
+.toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding-bottom: 16px; }
+
+/* ============= Empty State ============= */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 48px 24px; text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.empty-state .icon { font-size: 64px; margin-bottom: 16px; opacity: 0.4; }
+.empty-state h3 { font: var(--md-sys-typescale-title-medium); margin-bottom: 8px; }
+.empty-state p { font: var(--md-sys-typescale-body-medium); max-width: 400px; }
+
+/* ============= Responsive ============= */
+@media (max-width: 768px) {
+  .nav-rail { width: 64px; }
+  .nav-item { width: 56px; padding: 8px 2px 4px; }
+  .nav-item .label { font-size: 10px; }
+  .content { padding: 16px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .top-bar { padding: 12px 16px; }
+  .top-bar h1 { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== Navigation Rail ====== -->
+<nav class="nav-rail">
+  <div class="nav-logo">AI</div>
+  <button class="nav-item active" data-panel="chat" aria-label="Chat">
+    <span class="icon material-symbols-rounded">chat</span>
+    <span class="label">Chat</span>
+  </button>
+  <button class="nav-item" data-panel="models" aria-label="Models">
+    <span class="icon material-symbols-rounded">psychology</span>
+    <span class="label">Models</span>
+  </button>
+  <button class="nav-item" data-panel="skills" aria-label="Skills">
+    <span class="icon material-symbols-rounded">extension</span>
+    <span class="label">Skills</span>
+  </button>
+  <button class="nav-item" data-panel="mcp" aria-label="MCP">
+    <span class="icon material-symbols-rounded">hub</span>
+    <span class="label">MCP</span>
+  </button>
+  <div class="nav-spacer"></div>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
+    <span class="icon material-symbols-rounded">dark_mode</span>
+  </button>
+</nav>
+
+<!-- ====== Main Content ====== -->
+<div class="main">
+
+  <!-- ====== Chat Panel ====== -->
+  <div class="panel active" id="panel-chat">
+    <div class="chat-container">
+      <div class="top-bar">
+        <h1>Chat</h1>
+        <div class="badge" id="activeModelBadge">
+          <span class="status-dot online"></span>
+          <span id="activeModelLabel">Loading...</span>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg assistant">
+          <div class="model-tag">ChatAI</div>
+          Welcome to ChatAI! Try:
+          "weather in Tokyo", "calculate 3+5*2", or "search for AI news".
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput"
+          placeholder="Type a message and press Enter..."
+          onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="btn btn-filled" onclick="sendChat()">
+          <span class="icon material-symbols-rounded">send</span> Send
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Models Panel ====== -->
+  <div class="panel" id="panel-models">
+    <div class="top-bar">
+      <h1>Models</h1>
+      <span class="chip" id="activeModelChip">
+        <span class="dot on"></span> Active: <span id="activeModelName">—</span>
+      </span>
+    </div>
+    <div class="content">
+      <div class="section-label">Available Models</div>
+      <div class="card-grid" id="modelsGrid">
+        <div class="empty-state">
+          <span class="icon material-symbols-rounded">psychology</span>
+          <h3>Loading models...</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Skills Panel ====== -->
+  <div class="panel" id="panel-skills">
+    <div class="top-bar">
+      <h1>Skill Marketplace</h1>
+      <button class="btn btn-filled" onclick="document.getElementById('skillJarFile').click()">
+        <span class="icon material-symbols-rounded">upload</span> Upload JAR
+      </button>
+      <input type="file" id="skillJarFile" accept=".jar" style="display:none" onchange="uploadSkill()">
+    </div>
+    <div class="content">
+      <div class="section-label">Installed Skills</div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>Name</th><th>Description</th><th>Version</th><th>Status</th><th>Type</th><th>Actions</th></tr></thead>
+          <tbody id="skillsTable"><tr><td colspan="6"><div class="empty-state"><span class="icon material-symbols-rounded">extension</span><h3>Loading...</h3></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== MCP Panel ====== -->
+  <div class="panel" id="panel-mcp">
+    <div class="top-bar">
+      <h1>MCP Tools & Servers</h1>
+    </div>
+    <div class="content">
+      <div class="section-label">Built-in Servers</div>
+      <div class="table-container" style="margin-bottom:24px">
+        <table>
+          <thead><tr><th>Server</th><th>Type</th><th>Tools</th><th>Status</th></tr></thead>
+          <tbody id="mcpServersTable"></tbody>
+        </table>
+      </div>
+
+      <div class="section-label">Available MCP Tools</div>
+      <div class="table-container" style="margin-bottom:24px">
+        <table>
+          <thead><tr><th>Server</th><th>Tool</th><th>Description</th><th>Action</th></tr></thead>
+          <tbody id="mcpToolsTable"></tbody>
+        </table>
+      </div>
+
+      <div class="section-label">Connect External MCP Server</div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <input type="text" id="mcpName" placeholder="Server name"
+            style="flex:1;min-width:140px;padding:10px 16px;border-radius:var(--md-sys-shape-corner-full);border:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container-high);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-medium);outline:none;">
+          <input type="text" id="mcpEndpoint" placeholder="http://host:port/mcp"
+            style="flex:2;min-width:220px;padding:10px 16px;border-radius:var(--md-sys-shape-corner-full);border:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container-high);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-medium);outline:none;">
+          <button class="btn btn-filled" onclick="connectMcp()">
+            <span class="icon material-symbols-rounded">link</span> Connect
+          </button>
+        </div>
+      </div>
+      <div id="mcpCallResult"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== API Key Dialog ====== -->
+<div class="dialog-overlay" id="keyDialog" style="display:none">
+  <div class="dialog">
+    <h2 class="dialog-title" id="keyDialogTitle">Set API Key</h2>
+    <div class="dialog-body">
+      <label class="dialog-label">API Key</label>
+      <input type="password" id="keyDialogInput" class="md3-input" placeholder="sk-..." autocomplete="off">
+      <p class="dialog-hint">Your key is stored in memory only and never persisted to disk.</p>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-outlined" onclick="closeKeyDialog()">Cancel</button>
+      <button class="btn btn-filled" id="keyDialogSaveBtn" onclick="saveApiKey()">Save & Enable</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============= Theme Toggle =============
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.dataset.theme === 'dark';
+  html.dataset.theme = isDark ? 'light' : 'dark';
+  const icon = document.querySelector('.theme-toggle .icon');
+  icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+// Restore saved theme
+const saved = localStorage.getItem('theme');
+if (saved) document.documentElement.dataset.theme = saved;
+
+// ============= Navigation =============
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    item.classList.add('active');
+    const panelId = 'panel-' + item.dataset.panel;
+    document.getElementById(panelId).classList.add('active');
+    switch(item.dataset.panel) {
+      case 'models': loadModels(); break;
+      case 'skills': loadSkills(); break;
+      case 'mcp': loadMcp(); break;
+    }
+  });
+});
+
+// ============= Chat =============
+let sessionId = 'default';
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  appendMsg('user', msg, '');
+
+  // Loading indicator
+  const loadingId = 'loading-' + Date.now();
+  appendLoading(loadingId);
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: msg, sessionId})
+    });
+    const data = await res.json();
+    sessionId = data.sessionId;
+    removeLoading(loadingId);
+    appendMsg('assistant', data.message, data.model);
+    updateActiveModelBadge(data.model);
+  } catch(e) {
+    removeLoading(loadingId);
+    appendMsg('assistant', 'Error: ' + e.message, '');
+  }
+}
+
+function appendMsg(role, text, model) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+
+  if (role === 'assistant') {
+    let html = '';
+
+    // Model badge with icon
+    if (model) {
+      html += `<div class="model-badge"><span class="icon material-symbols-rounded">smart_toy</span>${escHtml(model)}</div>`;
+    }
+
+    // Parse [Thinking] and [Response] sections
+    const thinkingMatch = text.match(/\[Thinking\]\s*([\s\S]*?)(?=\[Response\]|$)/);
+    const responseMatch = text.match(/\[Response\]\s*([\s\S]*)/);
+
+    if (thinkingMatch || responseMatch) {
+      // Structured response
+      if (thinkingMatch && thinkingMatch[1].trim()) {
+        html += `<div class="thinking-label">Thinking</div>`;
+        html += `<div class="thinking-section">${escHtml(thinkingMatch[1].trim())}</div>`;
+      }
+      if (responseMatch && responseMatch[1].trim()) {
+        html += `<div class="response-section">${escHtml(responseMatch[1].trim())}</div>`;
+      }
+      // If no structured markers, show remaining text as response
+      const beforeThinking = text.substring(0, text.indexOf('[Thinking]')).trim();
+      if (!model && beforeThinking) {
+        html = escHtml(beforeThinking) + html;
+      }
+    } else {
+      // Plain text response
+      html += `<div class="response-section">${escHtml(text)}</div>`;
+    }
+
+    div.innerHTML = html;
+  } else {
+    div.textContent = text;
+  }
+
+  document.getElementById('chatMessages').appendChild(div);
+  div.scrollIntoView({behavior: 'smooth'});
+}
+
+function appendLoading(id) {
+  const div = document.createElement('div');
+  div.className = 'msg assistant'; div.id = id;
+  div.innerHTML = `<div class="md3-spinner"><div class="md3-spinner-track"></div>Thinking...</div>`;
+  document.getElementById('chatMessages').appendChild(div);
+  div.scrollIntoView({behavior: 'smooth'});
+}
+function removeLoading(id) { const el = document.getElementById(id); if (el) el.remove(); }
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+async function updateActiveModelBadge() {
+  try {
+    const res = await fetch('/api/models/active');
+    const data = await res.json();
+    const name = data.name || 'Unknown';
+    document.getElementById('activeModelLabel').textContent = name;
+    document.getElementById('activeModelBadge').querySelector('.status-dot').className = 'status-dot online';
+  } catch(e) {}
+}
+updateActiveModelBadge();
+
+// ============= Models =============
+let currentKeyModelId = null;
+
+async function loadModels() {
+  try {
+    const res = await fetch('/api/models');
+    const models = await res.json();
+    const grid = document.getElementById('modelsGrid');
+    grid.innerHTML = models.map(m => {
+      const available = m.enabled && (m.type === 'MOCK' || m.hasKey);
+      const statusClass = m.active ? 'selected' : (!available ? 'disabled' : '');
+      const isMock = m.type === 'MOCK';
+      const needsConfig = !isMock && !m.hasKey;
+      let actions = '';
+      if (m.active) {
+        actions = '<span class="chip active" style="cursor:default"><span class="dot on"></span> Active</span>';
+      } else if (available) {
+        actions = `<button class="btn btn-outlined" onclick="event.stopPropagation();setActiveModel('${m.id}')" style="font-size:12px;padding:4px 12px">Switch</button>`;
+      }
+      if (!isMock && (needsConfig || !m.enabled)) {
+        actions += `<button class="btn btn-filled" onclick="event.stopPropagation();openKeyDialog('${m.id}','${escHtml(m.name).replace(/'/g,"\\'")}')" style="font-size:12px;padding:4px 12px;margin-left:4px">Configure</button>`;
+      }
+      if (!isMock && !m.active && available) {
+        actions += `<button class="btn btn-outlined" onclick="event.stopPropagation();disableModel('${m.id}')" style="font-size:12px;padding:4px 12px;margin-left:4px">Disable</button>`;
+      }
+      const statusText = !m.enabled ? 'Needs enabling' : (needsConfig ? 'Needs API key' : '');
+      return `
+      <div class="model-card ${statusClass}" ${available ? `onclick="setActiveModel('${m.id}')"` : ''}>
+        <div class="model-icon" style="background:${m.color||'#58a6ff'}">
+          <span class="material-symbols-rounded">${m.icon||'smart_toy'}</span>
+        </div>
+        <div class="model-info">
+          <div class="model-name">${escHtml(m.name)}</div>
+          <div class="model-desc">${escHtml(m.description||'')}</div>
+          <div class="model-meta">
+            <span class="chip">${m.type}</span>
+            ${m.hasKey ? '<span class="chip" style="background:rgba(63,185,80,0.15);color:#3fb950;border-color:rgba(63,185,80,0.3)">Key set</span>' : ''}
+            ${!available ? `<span class="chip warning">${statusText}</span>` : ''}
+          </div>
+          ${actions ? `<div class="model-actions">${actions}</div>` : ''}
+        </div>
+      </div>
+    `}).join('');
+  } catch(e) {
+    document.getElementById('modelsGrid').innerHTML = '<div class="empty-state"><span class="icon material-symbols-rounded">error</span><h3>Failed to load models</h3></div>';
+  }
+}
+
+async function setActiveModel(id) {
+  try {
+    const res = await fetch('/api/models/active/' + id, {method:'PUT'});
+    const data = await res.json();
+    if (data.error) { showToast(data.error, true); loadModels(); return; }
+    loadModels();
+    updateActiveModelBadge();
+    showToast('Switched to ' + data.activeName);
+  } catch(e) { showToast('Failed to switch model: ' + e.message, true); }
+}
+
+// ============= API Key Management =============
+function openKeyDialog(id, name) {
+  currentKeyModelId = id;
+  document.getElementById('keyDialogTitle').textContent = 'Configure ' + name;
+  document.getElementById('keyDialogInput').value = '';
+  document.getElementById('keyDialog').style.display = 'flex';
+  document.getElementById('keyDialogInput').focus();
+}
+
+function closeKeyDialog() {
+  document.getElementById('keyDialog').style.display = 'none';
+  currentKeyModelId = null;
+}
+
+async function saveApiKey() {
+  const key = document.getElementById('keyDialogInput').value.trim();
+  if (!key) { showToast('Please enter an API key', true); return; }
+  try {
+    const res = await fetch('/api/models/' + currentKeyModelId + '/key', {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({apiKey: key})
+    });
+    const data = await res.json();
+    if (data.error) { showToast(data.error, true); return; }
+    const enRes = await fetch('/api/models/' + currentKeyModelId + '/enable', {method: 'PUT'});
+    const enData = await enRes.json();
+    if (enData.error) { showToast(enData.error, true); loadModels(); closeKeyDialog(); return; }
+    closeKeyDialog();
+    loadModels();
+    showToast('API key saved and model enabled');
+  } catch(e) { showToast('Failed: ' + e.message, true); }
+}
+
+async function disableModel(id) {
+  try {
+    await fetch('/api/models/' + id + '/disable', {method: 'PUT'});
+    loadModels();
+    updateActiveModelBadge();
+    showToast('Model disabled');
+  } catch(e) { showToast('Failed: ' + e.message, true); }
+}
+
+// Close dialog on overlay click
+document.addEventListener('click', function(e) {
+  if (e.target.id === 'keyDialog') closeKeyDialog();
+});
+
+function showToast(msg, isError) {
+  const el = document.createElement('div');
+  el.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 24px;background:${isError?'var(--md-sys-color-error-container)':'var(--md-sys-color-inverse-surface)'};color:${isError?'var(--md-sys-color-on-error-container)':'var(--md-sys-color-inverse-on-surface)'};border-radius:var(--md-sys-shape-corner-full);font:var(--md-sys-typescale-label-large);z-index:1000;box-shadow:var(--md-sys-elevation-3);animation:fadeIn 0.3s ease`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; el.style.transition='opacity 0.3s'; setTimeout(()=>el.remove(),300); }, 2500);
+}
+
+// ============= Skills =============
+async function loadSkills() {
+  try {
+    const res = await fetch('/api/skills');
+    const skills = await res.json();
+    document.getElementById('skillsTable').innerHTML = skills.map(s => `
+      <tr>
+        <td><strong>${escHtml(s.name)}</strong></td>
+        <td>${escHtml(s.description)}</td>
+        <td>${s.version}</td>
+        <td><span class="chip ${s.enabled?'active':''}"><span class="dot ${s.enabled?'on':'off'}"></span> ${s.enabled?'Enabled':'Disabled'}</span></td>
+        <td><span class="chip">${s.builtin?'built-in':'external'}</span></td>
+        <td>
+          ${s.enabled
+            ? `<button class="btn btn-outlined" onclick="toggleSkill('${s.name}',false)" style="padding:6px 14px;font-size:12px">Disable</button>`
+            : `<button class="btn btn-filled" onclick="toggleSkill('${s.name}',true)" style="padding:6px 14px;font-size:12px">Enable</button>`}
+          ${!s.builtin ? `<button class="btn btn-danger" onclick="deleteSkill('${s.name}')" style="padding:6px 14px;font-size:12px;margin-left:6px">Remove</button>` : ''}
+        </td>
+      </tr>
+    `).join('');
+  } catch(e) {
+    document.getElementById('skillsTable').innerHTML = '<tr><td colspan="6"><div class="empty-state"><span class="icon material-symbols-rounded">error</span><h3>Failed to load skills</h3></div></td></tr>';
+  }
+}
+
+async function toggleSkill(name, enable) {
+  await fetch(`/api/skills/${name}/${enable?'enable':'disable'}`, {method:'PUT'});
+  loadSkills();
+}
+
+async function deleteSkill(name) {
+  if (!confirm('Remove skill "' + name + '"?')) return;
+  await fetch(`/api/skills/${name}`, {method:'DELETE'});
+  loadSkills();
+}
+
+async function uploadSkill() {
+  const file = document.getElementById('skillJarFile').files[0];
+  if (!file) return;
+  const fd = new FormData(); fd.append('file', file);
+  try {
+    const res = await fetch('/api/skills/upload', {method:'POST', body: fd});
+    const data = await res.json();
+    if (data.error) { alert('Error: ' + data.error); return; }
+    showToast('Skill loaded: ' + data.skillName);
+    loadSkills();
+  } catch(e) { alert('Upload failed: ' + e.message); }
+}
+
+// ============= MCP =============
+async function loadMcp() {
+  try {
+    const sRes = await fetch('/api/mcp/servers');
+    const servers = await sRes.json();
+    document.getElementById('mcpServersTable').innerHTML = servers.length ? servers.map(s => `
+      <tr>
+        <td><strong>${escHtml(s.name)}</strong></td>
+        <td><span class="chip">${s.type}</span></td>
+        <td>${s.toolCount}</td>
+        <td><span class="chip active"><span class="dot on"></span> Connected</span></td>
+      </tr>
+    `).join('') : '<tr><td colspan="4"><div class="empty-state"><span class="icon material-symbols-rounded">dns</span><h3>No servers</h3></div></td></tr>';
+
+    const tRes = await fetch('/api/mcp/tools');
+    const tools = await tRes.json();
+    document.getElementById('mcpToolsTable').innerHTML = tools.length ? tools.map(t => `
+      <tr>
+        <td>${escHtml(t.server)}</td>
+        <td><strong>${escHtml(t.name)}</strong></td>
+        <td>${escHtml(t.description)}</td>
+        <td><button class="btn btn-outlined" onclick="callMcpTool('${t.name}')" style="padding:6px 14px;font-size:12px"><span class="icon material-symbols-rounded" style="font-size:16px">play_arrow</span> Test</button></td>
+      </tr>
+    `).join('') : '<tr><td colspan="4"><div class="empty-state"><span class="icon material-symbols-rounded">build</span><h3>No MCP tools available</h3></div></td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+async function connectMcp() {
+  const name = document.getElementById('mcpName').value.trim();
+  const endpoint = document.getElementById('mcpEndpoint').value.trim();
+  if (!name || !endpoint) return showToast('Enter both name and endpoint');
+  try {
+    const res = await fetch('/api/mcp/servers', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name, endpoint})
+    });
+    const data = await res.json();
+    if (data.error) {
+      document.getElementById('mcpCallResult').innerHTML = `<pre style="color:var(--md-sys-color-error)">${escHtml(data.error)}</pre>`;
+      return;
+    }
+    document.getElementById('mcpCallResult').innerHTML = `<pre>Connected to <strong>${escHtml(name)}</strong> — ${data.tools} tools available</pre>`;
+    loadMcp();
+  } catch(e) {
+    document.getElementById('mcpCallResult').innerHTML = `<pre style="color:var(--md-sys-color-error)">${escHtml(e.message)}</pre>`;
+  }
+}
+
+async function callMcpTool(toolName) {
+  try {
+    const res = await fetch(`/api/mcp/tools/${toolName}/call`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({path: "."})
+    });
+    const data = await res.json();
+    document.getElementById('mcpCallResult').innerHTML = `<pre><strong>Tool:</strong> ${escHtml(data.tool)}\n\n${escHtml(data.result)}</pre>`;
+  } catch(e) {
+    document.getElementById('mcpCallResult').innerHTML = `<pre style="color:var(--md-sys-color-error)">${escHtml(e.message)}</pre>`;
+  }
+}
+
+// ============= Initial Load =============
+loadModels();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[ {
+  "role" : "user",
+  "content" : "Hello, who are you?",
+  "timestamp" : "2026-05-26T03:53:09.357466900Z"
+}, {
+  "role" : "assistant",
+  "content" : "Hello! I'm the ChatAI agent. I can help you with:\n- Weather queries (e.g., \"weather in Beijing\")\n- Calculations (e.g., \"calculate 3 + 5 * 2\")\n- Web searches (e.g., \"search for AI news\")\n\nYou said: Hello, who are you?",
+  "timestamp" : "2026-05-26T03:53:09.359733300Z"
+} ]

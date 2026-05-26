@@ -1,0 +1,155 @@
+spring:
+  application:
+    name: ChatAI
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+server:
+  port: 8080
+
+agent:
+  active-model: mock-general
+  models:
+    - id: mock-general
+      name: ChatAI General
+      type: MOCK
+      api-endpoint: ""
+      api-key: ""
+      model-name: ""
+      enabled: true
+      config:
+        description: "Balanced general-purpose assistant for everyday tasks"
+        style: "balanced"
+        icon: "smart_toy"
+        color: "#58a6ff"
+
+    - id: mock-creative
+      name: ChatAI Creative
+      type: MOCK
+      api-endpoint: ""
+      api-key: ""
+      model-name: ""
+      enabled: true
+      config:
+        description: "Creative and imaginative, excels at writing and brainstorming"
+        style: "creative"
+        icon: "palette"
+        color: "#f0883e"
+
+    - id: mock-precise
+      name: ChatAI Precise
+      type: MOCK
+      api-endpoint: ""
+      api-key: ""
+      model-name: ""
+      enabled: true
+      config:
+        description: "Concise and technical, optimized for code and analysis"
+        style: "precise"
+        icon: "code"
+        color: "#3fb950"
+
+    - id: mock-fast
+      name: ChatAI Fast
+      type: MOCK
+      api-endpoint: ""
+      api-key: ""
+      model-name: ""
+      enabled: true
+      config:
+        description: "Ultra-fast lightweight model for quick responses"
+        style: "fast"
+        icon: "bolt"
+        color: "#d2a850"
+
+    # --- Real model configurations (enable and add API keys to use) ---
+
+    - id: openai-gpt4
+      name: OpenAI GPT-4o
+      type: OPENAI
+      api-endpoint: https://api.openai.com/v1/chat/completions
+      api-key: ${OPENAI_API_KEY:}
+      model-name: gpt-4o
+      enabled: false
+      config:
+        description: "OpenAI's flagship multimodal model"
+        style: "balanced"
+        icon: "auto_awesome"
+        color: "#74aa9c"
+
+    - id: qwen-plus
+      name: Qwen Plus
+      type: QWEN
+      api-endpoint: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
+      api-key: ${QWEN_API_KEY:}
+      model-name: qwen-plus
+      enabled: false
+      config:
+        description: "Alibaba's advanced Chinese-English bilingual model"
+        style: "balanced"
+        icon: "translate"
+        color: "#6151f7"
+
+    - id: qwen-max
+      name: Qwen Max
+      type: QWEN
+      api-endpoint: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
+      api-key: ${QWEN_API_KEY:}
+      model-name: qwen-max
+      enabled: false
+      config:
+        description: "Qwen's most capable model for complex reasoning"
+        style: "balanced"
+        icon: "psychology"
+        color: "#7c5cfc"
+
+    - id: deepseek-v4-flash
+      name: DeepSeek V4 Flash
+      type: DEEPSEEK
+      api-endpoint: https://api.deepseek.com/chat/completions
+      api-key: ${DEEPSEEK_API_KEY:}
+      model-name: deepseek-v4-flash
+      enabled: false
+      config:
+        description: "Fast, cost-efficient V4 model for everyday tasks"
+        style: "fast"
+        icon: "bolt"
+        color: "#4d6bfe"
+
+    - id: deepseek-v4-pro
+      name: DeepSeek V4 Pro
+      type: DEEPSEEK
+      api-endpoint: https://api.deepseek.com/chat/completions
+      api-key: ${DEEPSEEK_API_KEY:}
+      model-name: deepseek-v4-pro
+      enabled: false
+      config:
+        description: "Flagship V4 model with advanced reasoning, thinking mode, and 128K context"
+        style: "balanced"
+        icon: "psychology"
+        color: "#3f51b5"
+        thinking: true
+        reasoning_effort: "high"
+
+    # Deprecated: deepseek-chat / deepseek-reasoner will be removed 2026/07/24.
+    # They map to deepseek-v4-flash (non-thinking / thinking mode respectively).
+    # Use deepseek-v4-flash or deepseek-v4-pro instead.
+
+    - id: local-llama
+      name: Local Llama 3
+      type: LOCAL
+      api-endpoint: http://localhost:11434/v1/chat/completions
+      api-key: ollama
+      model-name: llama3
+      enabled: false
+      config:
+        description: "Self-hosted Llama 3 via Ollama"
+        style: "balanced"
+        icon: "memory"
+        color: "#f15a24"
+
+logging:
+  level:
+    com.onear.chatai: INFO
