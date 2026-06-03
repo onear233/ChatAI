@@ -25,14 +25,19 @@ public class SkillRegistry {
     }
 
     public void register(Skill skill, boolean builtin) {
-        skills.put(skill.getName(), new SkillEntry(skill, builtin));
+        skills.put(skill.getName(), new SkillEntry(skill, builtin, null));
     }
 
-    public void unregister(String name) {
-        var entry = skills.get(name);
+    public void register(Skill skill, boolean builtin, String sourceJar) {
+        skills.put(skill.getName(), new SkillEntry(skill, builtin, sourceJar));
+    }
+
+    public String unregister(String name) {
+        var entry = skills.remove(name);
         if (entry != null && !entry.builtin) {
-            skills.remove(name);
+            return entry.sourceJar;
         }
+        return null;
     }
 
     public void enable(String name) {
@@ -69,11 +74,13 @@ public class SkillRegistry {
         public final Skill skill;
         public volatile boolean enabled;
         public final boolean builtin;
+        public final String sourceJar;
 
-        SkillEntry(Skill skill, boolean builtin) {
+        SkillEntry(Skill skill, boolean builtin, String sourceJar) {
             this.skill = skill;
             this.enabled = true;
             this.builtin = builtin;
+            this.sourceJar = sourceJar;
         }
     }
 }

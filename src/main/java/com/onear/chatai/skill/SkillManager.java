@@ -40,8 +40,9 @@ public class SkillManager {
         if (skills.isEmpty()) {
             throw new IllegalArgumentException("No Skill implementation found in: " + jarPath.getFileName());
         }
+        String jarName = jarPath.getFileName().toString();
         for (Skill s : skills) {
-            registry.register(s, false);
+            registry.register(s, false, jarName);
         }
         return skills.getFirst();
     }
@@ -64,7 +65,8 @@ public class SkillManager {
                     Path file = skillsDir.resolve((Path) event.context());
                     if (file.toString().endsWith(".jar")) {
                         try {
-                            loader.loadFromJar(file).forEach(s -> registry.register(s, false));
+                            String jarName = file.getFileName().toString();
+                            loader.loadFromJar(file).forEach(s -> registry.register(s, false, jarName));
                             log.info("Hot-loaded skill from {}", file.getFileName());
                         } catch (Exception e) {
                             log.warn("Hot-load failed for {}: {}", file.getFileName(), e.getMessage());

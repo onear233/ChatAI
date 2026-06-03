@@ -75,7 +75,15 @@ public class SkillController {
 
     @DeleteMapping("/{name}")
     public ResponseEntity<Map<String, String>> unregisterSkill(@PathVariable String name) {
-        registry.unregister(name);
+        String sourceJar = registry.unregister(name);
+        if (sourceJar != null) {
+            try {
+                Path jarFile = Paths.get("skills", sourceJar);
+                Files.deleteIfExists(jarFile);
+            } catch (IOException e) {
+                // JAR deletion is best-effort; registry entry already removed
+            }
+        }
         return ResponseEntity.ok(Map.of("status", "unregistered", "skill", name));
     }
 }
